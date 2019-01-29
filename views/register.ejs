@@ -41,35 +41,44 @@
                 <h5 class="text-muted m-t-0 font-600">Responsive Admin Dashboard</h5>
             </div>
         	<div class="m-t-40 card-box">
+                    <% if(msg !== null){ %>
+                        <div class="alert alert-info">
+  												 <strong>Heads up!</strong> <%= msg %>
+  											</div>
+                    <%   } %>
                 <div class="text-center">
                     <h4 class="text-uppercase font-bold m-b-0">Register</h4>
                 </div>
                 <div class="panel-body">
-                    <form class="form-horizontal m-t-20" action="/register/newUser" method="POST">
+         <form class="form-horizontal m-t-20" action="/register/newUser" method="POST">
 
-						<div class="form-group ">
-							<div class="col-xs-12">
-								<input class="form-control" type="email" required="" placeholder="Email" name="email">
-							</div>
-						</div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="emailAddress">Email</label>
+                <div class="col-md-9">
+                    <input type="email" required id="emailAddress" name="email" class="form-control" placeholder="Email Address">
+                </div>
+            </div>
 
-						<div class="form-group ">
-							<div class="col-xs-12">
-								<input class="form-control" type="text" required="" placeholder="Username" name="name">
-							</div>
-                        </div>
-                        
-						<div class="form-group ">
-							<div class="col-xs-12">
-								<input class="form-control" type="text" required="" placeholder="Phone" name="phone">
-							</div>
-						</div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="Username">User Name</label>
+                <div class="col-md-9">
+                    <input type="text" required id="Username" name="name" class="form-control" placeholder="User Name">
+                </div>
+            </div>
 
-						<div class="form-group">
-							<div class="col-xs-12">
-								<input class="form-control" type="password" required="" placeholder="Password" name="password">
-							</div>
-						</div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="userPhone">Phone</label>
+                <div class="col-md-9">
+                    <input type="text" required id="userPhone" name="phone" class="form-control" placeholder="Phone Number">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="userPassword">Password</label>
+                <div class="col-md-9">
+                    <input type="password" required id="userPassword" name="password" class="form-control" placeholder="password">
+                </div>
+            </div>
 
 						<div class="form-group">
 							<div class="col-xs-12">
@@ -96,7 +105,7 @@
 
 			<div class="row">
 				<div class="col-sm-12 text-center">
-					<p class="text-muted">Already have account?<a href="page-login.html" class="text-primary m-l-5"><b>Sign In</b></a></p>
+					<p class="text-muted">Already have account?<a href="/login" class="text-primary m-l-5"><b>Sign In</b></a></p>
 				</div>
 			</div>
 

@@ -29,9 +29,9 @@ var insertUsers =(data,callback)=>{
                 })
                 .catch(err => console.log(err));
             }else{
-                callback({msg:'User already exist', data:null});
+                callback({msg:'Email already exist.', data:null});
             }
-            
+
         }
     });
 }
@@ -42,7 +42,7 @@ var loginCheck = (data,callback)=>{
             console.log(err);
         }else{
             if(result == null){
-                callback({msg:'Email does not match'});
+                callback({msg:'Email does not exist.'});
             }else{
                 bcrypt.compare(data.user_password, result.user_password, function(err, res) {
                     if(err){
@@ -57,7 +57,7 @@ var loginCheck = (data,callback)=>{
                             }
                             callback({msg:'success',data});
                         }else{
-                            callback({msg:'Password does not match'})
+                            callback({msg:'Password does not match.'})
                         }
                     }
                 });

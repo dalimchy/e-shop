@@ -7,12 +7,12 @@ const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-//DB config  
+//DB config
 const db = require('./config/keys').mongoURI;
 const secret = require('./config/keys').secret;
 //Mongo DB connection
-mongoose.connect(db, { 
-    useNewUrlParser: true 
+mongoose.connect(db, {
+    useNewUrlParser: true
   }).then(()=>{
     console.log("DB connected");
   }).catch((err)=>{
@@ -55,7 +55,9 @@ app.use(express.static("public"));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+app.use('/login/loginCheck', loginRouter);
 app.use('/register', registerRouter);
+app.use('/register/newUser', registerRouter);
 app.use('/dashboard', dashboardRouter);
 app.use('/logout', userLogoutRouter);
 
