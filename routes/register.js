@@ -6,20 +6,28 @@ var {insertUsers} = require('./../utils/users');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var data = {
-    title : 'Register',
-    msg : null
+  if(req.session.login){
+    res.redirect('/dashboard');
+  }else{
+    var data = {
+      title : 'Register',
+      msg : null
+    }
+    res.render('pages/dashboard/register', data);
   }
-  res.render('register', data);
 });
+
 router.post('/newUser', function(req, res) {
-  var data = {
-    user_name : req.body.name,
-    user_email : req.body.email,
-    user_phone : req.body.phone,
-    user_password : req.body.password,
-    user_img : 'avatar-1.jpg'
-  }
+  if(req.session.login){
+    res.redirect('/dashboard');
+  }else{
+    var data = {
+      user_name : req.body.name,
+      user_email : req.body.email,
+      user_phone : req.body.phone,
+      user_password : req.body.password,
+      user_img : 'avatar-1.jpg'
+    }
     insertUsers(data, (response)=>{
       if(response.msg == 'success'){
         req.session.success = true;
@@ -34,9 +42,10 @@ router.post('/newUser', function(req, res) {
           title : 'Register',
           msg : response.msg
         }
-        res.render('register', data);
+        res.render('pages/dashboard/register', data);
       }
     });
+  }
 });
 
 module.exports = router;
