@@ -12,6 +12,9 @@
         <!-- App title -->
         <title>Adminto - Responsive Admin Dashboard Template</title>
 
+        <!-- form Uploads -->
+        <link href="/admin_assets/plugins/fileuploads/css/dropify.min.css" rel="stylesheet" type="text/css" />
+
         <!-- App CSS -->
         <link href="/admin_assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/admin_assets/css/core.css" rel="stylesheet" type="text/css" />
@@ -29,7 +32,15 @@
         <![endif]-->
 
         <script src="/admin_assets/js/modernizr.min.js"></script>
-
+        <style type="text/css">
+            #fileUploadRegister .dropify-wrapper{
+                height: 130px;
+            }
+            #fileUploadRegister .dropify-clear{
+                bottom: 10px;
+                top: unset;;
+            }
+        </style>
     </head>
     <body>
 
@@ -50,7 +61,7 @@
                     <h4 class="text-uppercase font-bold m-b-0">Register</h4>
                 </div>
                 <div class="panel-body">
-         <form class="form-horizontal m-t-20" action="/register/newUser" method="POST">
+         <form class="form-horizontal m-t-20" action="/register/newUser" method="POST" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label class="col-md-3 control-label" for="emailAddress">Email</label>
@@ -79,6 +90,9 @@
                     <input type="password" required id="userPassword" name="password" class="form-control" placeholder="password">
                 </div>
             </div>
+            <div class="form-group" id="fileUploadRegister">
+                <input type="file" class="dropify" data-default-file="" value="0" name="profile_pic" accept="image/*"/>
+            </div><!-- end col -->
 
 						<div class="form-group">
 							<div class="col-xs-12">
@@ -130,10 +144,28 @@
         <script src="/admin_assets/js/wow.min.js"></script>
         <script src="/admin_assets/js/jquery.nicescroll.js"></script>
         <script src="/admin_assets/js/jquery.scrollTo.min.js"></script>
+        
+        <!-- file uploads js -->
+        <script src="/admin_assets/plugins/fileuploads/js/dropify.min.js"></script>
 
         <!-- App js -->
         <script src="/admin_assets/js/jquery.core.js"></script>
         <script src="/admin_assets/js/jquery.app.js"></script>
+
+
+        <script type="text/javascript">
+            $('.dropify').dropify({
+                messages: {
+                    'default': 'Drag and drop a your image here or click',
+                    'replace': 'Drag and drop or click to replace',
+                    'remove': 'Remove',
+                    'error': 'Ooops, something wrong appended.'
+                },
+                error: {
+                    'fileSize': 'The file size is too big (1M max).'
+                }
+            });
+        </script>
 
 	</body>
 </html>
