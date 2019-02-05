@@ -21,7 +21,7 @@ var addMenu =(data,callback)=>{
     .catch(err => console.log(err));
 }
 var findAppearance =(data,callback)=>{
-    Appearance.find({appearance_type:data.type}, function (err, docs) {
+    Appearance.find({appearance_type:data.type}).sort({created_at: 'desc'}).exec(function (err, docs) {
         if(err){
             console.log(err);
         }else{
