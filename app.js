@@ -6,6 +6,7 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var _ = require('lodash');
 
 //DB config
 const db = require('./config/keys').mongoURI;

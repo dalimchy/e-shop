@@ -1,8 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
+var _ = require('lodash');
 
-var {addMenu} = require('./../utils/dashboard');
+var {
+    addMenu,
+    findAppearance
+  } = require('./../utils/dashboard');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -26,19 +30,34 @@ router.get('/', function(req, res, next) {
 });
 /* GET menu page. */
 router.get('/menu', function(req, res, next) {
+  if(req.session.msg == undefined){
+      req.session.msg = null;
+  }
   if(req.session.login){
-    var data = {
-      title:'Menu',
-      msg : null,
-      userData : {
-        user_name : req.session.user_name,
-        user_id:req.session.user_id,
-        user_email:req.session.user_email,
-        user_img:req.session.user_img
+    findAppearance({type:'menu'},(response)=>{
+      if(response.msg == 'success'){
+        var data = {
+          title:'Menu',
+          msg : null,
+          ses_msg : req.session.msg,
+          allMenu : response.resdata,
+          _ : _,
+          userData : {
+            user_name : req.session.user_name,
+            user_id:req.session.user_id,
+            user_email:req.session.user_email,
+            user_img:req.session.user_img
+          }
+        }
+        // console.log(51, response.resdata);
+        req.session.msg = null;
+        res.render('pages/dashboard/menu', data);
+      }else{
+        console.log(response);
       }
-    }
-    console.log(data.userData);
-    res.render('pages/dashboard/menu', data);
+    });
+    
+    
   }else{
     res.redirect('/login');
   }
@@ -63,34 +82,13 @@ router.post('/menu', function(req, res, next) {
     addMenu(bodyData, (response)=>{
       console.log(response.msg);
       if(response.msg == 'success'){
-        var data = {
-          title:'Menu',
-          msg : 'Menu add successfully!',
-          userData : {
-            user_name : req.session.user_name,
-            user_id:req.session.user_id,
-            user_email:req.session.user_email,
-            user_img:req.session.user_img
-          }
-        }
-        console.log(data.userData);
+        req.session.msg = "Menu add successfully!";
         res.redirect('/dashboard/menu');
       }else{
-        var data = {
-          title:'Menu',
-          msg : null,
-          userData : {
-            user_name : req.session.user_name,
-            user_id:req.session.user_id,
-            user_email:req.session.user_email,
-            user_img:req.session.user_img
-          }
-        }
-        console.log(data.userData);
-        res.render('pages/dashboard/menu', data);
+        req.session.msg = "Error !!";
+        res.redirect('/dashboard/menu');
       }
     });
-    console.log(bodyData);
   }else{
     res.redirect('/login');
   }

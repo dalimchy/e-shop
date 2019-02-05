@@ -20,5 +20,14 @@ var addMenu =(data,callback)=>{
     })
     .catch(err => console.log(err));
 }
+var findAppearance =(data,callback)=>{
+    Appearance.find({appearance_type:data.type}, function (err, docs) {
+        if(err){
+            console.log(err);
+        }else{
+            callback({msg:'success',resdata:docs});
+        }
+    });
 
-module.exports = {addMenu};
+}
+module.exports = {addMenu,findAppearance};
