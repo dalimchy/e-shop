@@ -14,9 +14,13 @@
                             	<div class="card-box">
                             		<div class="row">
                             			<div class="col-sm-12">
-                            				<h5><b>Add Menu</b></h5>
-
-                            				<form class="form-inline">
+                                            <h5><b>Add Menu</b></h5>
+                                            <% if(msg !== null){ %>
+                                                <div class="alert alert-success">
+                                                    <%= msg %>
+                                                </div>
+                                            <%   } %>
+                            				<form class="form-inline" method="POST" action="/dashboard/menu">
 												<div class="form-group m-r-10">
 													<input name="menu_title" type="text" class="form-control" id="menuTitle" placeholder="Menu Title..." required>
                                                 </div>
@@ -39,9 +43,10 @@
                                                     <label>Status :   </label>
                                                     <input type="checkbox" checked data-plugin="switchery" data-color="#00b19d" data-size="small" data-switchery="true" style="display: none;" name="active_status">
                                                 </div>
-                                                <input name="menu_icon" type="text" id="menuIconName" style="display: none" required>
+                                                <input name="menu_icon" type="text" id="menuIconName" style="display: none" value="fa fa-shopping-bag" required>
                                                 
-												<a href="#select_icon" class="btn btn-info waves-effect waves-light m-l-10 btn-md" data-animation="blur" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Select Icon</a>
+                                                <a href="#select_icon" class="btn btn-info waves-effect waves-light m-l-10 btn-md" data-animation="blur" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Select Icon</a>
+                                                <div id="v_s_i" class="btn btn-info waves-effect waves-light m-l-10 btn-md" style="display:none"></div>
 												<button type="submit" class="btn btn-success waves-effect waves-light m-l-10 btn-md">
 													Add
 												</button>
@@ -118,94 +123,94 @@
                                         <section>
                                             <div class="icon-list-demo row">
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-shopping-bag"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-shopping-bag"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-shopping-cart"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-shopping-cart"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-shopping-basket"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-shopping-basket"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-suitcase"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-suitcase"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-apple"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-apple"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-android"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-android"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-address-book"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-address-book"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-user-circle"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-user-circle"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-battery-full"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-battery-full"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-amazon"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-amazon"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-diamond"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-diamond"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-bed"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-bed"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-motorcycle"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-motorcycle"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-calculator"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-calculator"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-bicycle"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-bicycle"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-birthday-cake"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-birthday-cake"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-paint-brush"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-paint-brush"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa   fa-futbol-o"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa   fa-futbol-o"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa    fa-plug"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa    fa-plug"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-camera"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-camera"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-camera-retro"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-camera-retro"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-cube"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-cube"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-desktop"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-desktop"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-cutlery"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-cutlery"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-female"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-female"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa  fa-flag-checkered"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa  fa-flag-checkered"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa   fa-keyboard-o"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa   fa-keyboard-o"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa   fa-laptop"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa   fa-laptop"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-mobile"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-mobile"></i></button>
                                                 </div>
                                                 <div class="col-sm-6 col-md-4 col-lg-3">
-                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon()"><i class="fa fa-microphone"></i></button>
+                                                    <button type="button" class="btn btn-info waves-effect waves-light m-b-5" onclick="selectMenuIcon(this)"><i class="fa fa-microphone"></i></button>
                                                 </div>
                                             </div>
                                         </section> 
