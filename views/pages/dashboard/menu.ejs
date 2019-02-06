@@ -91,11 +91,11 @@
                                         </thead>
                                         <tbody>
                                             <% _.each(allMenu, function(v,k){ %> 
-                                                <tr>
+                                                <tr id="_menu<%= v.appearance_id %>">
                                                     <td><%= v.menu_title %></td>
                                                     <td><i class="<%= v.menu_icon %>"></i></td>
                                                     <td><%= v.assign_menu %></td>
-                                                    <td><% if(v.status == 1){ %>Active<% }else{ %>Inactive<% } %></td>
+                                                    <td data-id="<%= v.appearance_id %>"><% if(v.status == 1){ %><button onclick="updateMenu(this,'status')" type="button" class="btn btn-block btn--md btn-success waves-effect waves-light" data-status="active">Active</button><% }else{ %><button onclick="updateMenu(this,'status')" type="button" class="btn btn-block btn--md btn-danger waves-effect waves-light" data-status="inactive">In-Active</button><% } %></td>
                                                 </tr>
                                             <% }); %>
                                             

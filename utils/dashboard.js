@@ -30,4 +30,16 @@ var findAppearance =(data,callback)=>{
     });
 
 }
-module.exports = {addMenu,findAppearance};
+
+var menuUpdate = (data,callback)=>{
+    if(data.type == 'status'){
+        Appearance.update({appearance_id : data.id}, {status :data.value}, (err,result)=>{
+            if(err){
+                console.log(err);
+            }else{
+                callback({msg:'success',data:result});
+            }
+        })
+    }
+}
+module.exports = {addMenu,findAppearance,menuUpdate};
