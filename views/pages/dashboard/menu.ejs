@@ -32,18 +32,18 @@
                                                         <input type="radio" id="inlineRadio1" value="primay_menu" name="assginMenu" checked="">
                                                         <label for="inlineRadio1">Primary</label>
                                                     </div>
-                                                    <div class="radio radio-info radio-inline">
+                                                    <div class="radio radio-purple radio-inline">
                                                         <input type="radio" id="inlineRadio2" value="secondary_menu" name="assginMenu">
                                                         <label for="inlineRadio2">Secondary</label>
                                                     </div>
-                                                    <div class="radio radio-info radio-inline">
+                                                    <div class="radio radio-pink radio-inline">
                                                         <input type="radio" id="inlineRadio3" value="footer_menu" name="assginMenu">
                                                         <label for="inlineRadio3">Footer</label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group m-r-10">
                                                     <label>Status :   </label>
-                                                    <input type="checkbox" checked data-plugin="switchery" data-color="#00b19d" data-size="small" data-switchery="true" style="display: none;" name="active_status">
+                                                    <input type="checkbox" checked data-plugin="switchery" data-color="#10c469" data-size="small" data-switchery="true" style="display: none;" name="active_status">
                                                 </div>
                                                 <input name="menu_icon" type="text" id="menuIconName" style="display: none" value="fa fa-shopping-bag" required>
                                                 
@@ -87,6 +87,7 @@
                                                 <th>Menu Icon</th>
                                                 <th>Assign Menu</th>
                                                 <th>Status</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -96,6 +97,7 @@
                                                     <td><i class="<%= v.menu_icon %>"></i></td>
                                                     <td><%= v.assign_menu %></td>
                                                     <td data-id="<%= v.appearance_id %>"><% if(v.status == 1){ %><button onclick="updateMenu(this,'status')" type="button" class="btn btn-block btn--md btn-success waves-effect waves-light" data-status="active">Active</button><% }else{ %><button onclick="updateMenu(this,'status')" type="button" class="btn btn-block btn--md btn-danger waves-effect waves-light" data-status="inactive">In-Active</button><% } %></td>
+                                                    <td data-id="<%= v.appearance_id %>" ><button class="btn btn-block btn--md btn-danger waves-effect waves-light" onclick="removeMenu(this)"> <i class="fa fa-trash-o"></i> </button></td>
                                                 </tr>
                                             <% }); %>
                                             
@@ -224,7 +226,7 @@
                             </div>
 
                         </div>
-                </div>
+            </div>
 
 
             <!-- ============================================================== -->

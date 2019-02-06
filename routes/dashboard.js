@@ -6,7 +6,8 @@ var _ = require('lodash');
 var {
     addMenu,
     findAppearance,
-    menuUpdate
+    menuUpdate,
+    menuDelete
   } = require('./../utils/dashboard');
 
 /* GET home page. */
@@ -96,11 +97,26 @@ router.post('/menu', function(req, res, next) {
 
 });
 router.post('/menu/menu_update', function(req,res){
-  menuUpdate(req.body, (response)=>{
-    if(response.msg == 'success'){
-      res.send(response);
-    }
-  });
+  if(req.session.login){
+    menuUpdate(req.body, (response)=>{
+      if(response.msg == 'success'){
+        res.send(response);
+      }
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
+router.post('/menu/menu_delete', function(req,res){
+  if(req.session.login){
+    menuDelete(req.body, (response)=>{
+      if(response.msg == 'success'){
+        res.send(response);
+      }
+    });
+  }else{
+    res.redirect('/login');
+  }
 });
 
 module.exports = router;

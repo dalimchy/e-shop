@@ -36,3 +36,20 @@ function ajaxMenuUpdata(data){
         }
     });
 }
+
+function removeMenu(ele){
+    var dataid = $(ele).parent('td').attr('data-id')
+    $.ajax({
+        type: "POST",
+        url: '/dashboard/menu/menu_delete',
+        data: {id:dataid},
+        error: function() {
+            console.log('failed');
+         },
+         success: function(res) {
+             if(res.msg == 'success'){
+                 $('#_menu'+dataid).remove();
+            }
+        }
+    });
+}
