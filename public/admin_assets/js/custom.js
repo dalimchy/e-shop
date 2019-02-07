@@ -6,25 +6,25 @@ function selectMenuIcon(ele){
     Custombox.close();
 }
 
-function updateMenu(ele,type){
+function update_appear(ele,type){
     if(type == 'status'){
         if($(ele).attr('data-status') == 'active'){
             var data = {type:"status",id:$(ele).parent('td').attr('data-id'),value:0}
-            ajaxMenuUpdata(data);
+            appearance_update(data);
             $(ele).removeClass('btn-success').addClass('btn-danger').attr('data-status', 'inactive').text('In-Active');
         }else{
             var data = {type:"status",id:$(ele).parent('td').attr('data-id'),value:1}
-            ajaxMenuUpdata(data)
+            appearance_update(data)
             $(ele).removeClass('btn-danger').addClass('btn-success').attr('data-status', 'active').text('Active');
         }
     }
 }
 
 
-function ajaxMenuUpdata(data){
+function appearance_update(data){
     $.ajax({
         type: "POST",
-        url: '/dashboard/menu/menu_update',
+        url: '/dashboard/appearance_update',
         data: data,
         error: function() {
             return false;
@@ -37,11 +37,11 @@ function ajaxMenuUpdata(data){
     });
 }
 
-function removeMenu(ele){
+function appearance_delete(ele){
     var dataid = $(ele).parent('td').attr('data-id')
     $.ajax({
         type: "POST",
-        url: '/dashboard/menu/menu_delete',
+        url: '/dashboard/appearance_delete',
         data: {id:dataid},
         error: function() {
             console.log('failed');
@@ -49,6 +49,7 @@ function removeMenu(ele){
          success: function(res) {
              if(res.msg == 'success'){
                  $('#_menu'+dataid).remove();
+                 $('#_slider'+dataid).remove();
             }
         }
     });

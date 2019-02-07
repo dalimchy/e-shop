@@ -96,8 +96,8 @@
                                                     <td><%= v.menu_title %></td>
                                                     <td><i class="<%= v.menu_icon %>"></i></td>
                                                     <td><%= v.assign_menu %></td>
-                                                    <td data-id="<%= v.appearance_id %>"><% if(v.status == 1){ %><button onclick="updateMenu(this,'status')" type="button" class="btn btn-block btn--md btn-success waves-effect waves-light" data-status="active">Active</button><% }else{ %><button onclick="updateMenu(this,'status')" type="button" class="btn btn-block btn--md btn-danger waves-effect waves-light" data-status="inactive">In-Active</button><% } %></td>
-                                                    <td data-id="<%= v.appearance_id %>" ><button class="btn btn-block btn--md btn-danger waves-effect waves-light" onclick="removeMenu(this)"> <i class="fa fa-trash-o"></i> </button></td>
+                                                    <td data-id="<%= v.appearance_id %>"><% if(v.status == 1){ %><button onclick="update_appear(this,'status')" type="button" class="btn btn-block btn--md btn-success waves-effect waves-light" data-status="active">Active</button><% }else{ %><button onclick="update_appear(this,'status')" type="button" class="btn btn-block btn--md btn-danger waves-effect waves-light" data-status="inactive">In-Active</button><% } %></td>
+                                                    <td data-id="<%= v.appearance_id %>" ><button class="btn btn-block btn--md btn-danger waves-effect waves-light" onclick="appearance_delete(this)"> <i class="fa fa-trash-o"></i> </button></td>
                                                 </tr>
                                             <% }); %>
                                             

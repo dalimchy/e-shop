@@ -24,6 +24,22 @@ const appearanceSchema = new Schema({
         type:String,
         default:null
     },
+    slider_heading:{
+        type:String,
+        default:null
+    },
+    slider_desc:{
+        type:String,
+        default:null
+    },
+    slider_img:{
+        type:String,
+        default:null
+    },
+    assign_slider:{
+        type:String,
+        default:null
+    },
     status:{
         type:String,
         required:true
