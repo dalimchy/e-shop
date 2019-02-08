@@ -210,6 +210,37 @@ router.post('/slider', function(req, res, next) {
 
 });
 
+router.get('/main-category', function(req,res,next){
+  if(req.session.msg == undefined){
+    req.session.msg = null;
+  }
+  if(req.session.login){
+    var data = {
+      title:'Main-category',
+      msg : null,
+      ses_msg : req.session.msg,
+      _ : _,
+      userData : {
+        user_name : req.session.user_name,
+        user_id:req.session.user_id,
+        user_email:req.session.user_email,
+        user_img:req.session.user_img
+      }
+    }
+    console.log(data.userData);
+    res.render('pages/dashboard/main_category', data);
+  }else{
+    res.redirect('/login');
+  }
+});
+router.post('/main-category', function(req,res){
+  console.log(238,req.body);
+  // if(req.session.login){
+  //   res.send('se')
+  // }else{
+  //   res.redirect('/login');
+  // }
+});
 
 
 module.exports = router;

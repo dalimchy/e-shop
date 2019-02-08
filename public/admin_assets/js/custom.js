@@ -6,6 +6,16 @@ function selectMenuIcon(ele){
     Custombox.close();
 }
 
+function selectIcon(ele,type){
+    var value = $(ele).find('i').attr('class');
+    if(type == 'category'){
+        $('#category_icon_holder i').attr('class', value);
+        $('#category_icon_holder').css('visibility', 'visible');
+        $('#category_icon').val(value)
+        Custombox.close();
+    }
+}
+
 function update_appear(ele,type){
     if(type == 'status'){
         if($(ele).attr('data-status') == 'active'){

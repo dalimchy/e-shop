@@ -30,7 +30,7 @@
 
 <!-- Dashboard init -->
 <!-- <script src="/admin_assets/pages/jquery.dashboard.js"></script> -->
-    <% if(title == 'Menu' || title == 'Slider'){%>
+    <% if(title == 'Menu' || title == 'Slider' || title == 'Main-category'){%>
        <!-- Datatables-->
        <script src="/admin_assets/plugins/datatables/jquery.dataTables.min.js"></script>
        <script src="/admin_assets/plugins/datatables/dataTables.bootstrap.js"></script>
@@ -71,13 +71,14 @@
     </script>
 
     <% } %>
-<% if(title == 'Slider'){%> 
+<% if(title == 'Slider' || title == 'Main-category'){%> 
           <!-- file uploads js -->
         <script src="/admin_assets/plugins/fileuploads/js/dropify.min.js"></script>
         <script type="text/javascript">
+        var pageTitle = '<%= title %>';
             $('.dropify').dropify({
                 messages: {
-                    'default': 'Drag and drop a your slider image here or click',
+                    'default': 'Drag and drop a your '+pageTitle+' image here or click',
                     'replace': 'Drag and drop or click to replace',
                     'remove': 'Remove',
                     'error': 'Ooops, something wrong appended.'

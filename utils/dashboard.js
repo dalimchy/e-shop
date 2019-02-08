@@ -3,6 +3,7 @@ var router = express.Router();
 const uuidv4 = require('uuid/v4');
 
 const Appearance = require('../models/Appearance');
+const Category = require('../models/Category');
 
 var addMenu =(data,callback)=>{
     var appearance_id = uuidv4();
@@ -68,4 +69,48 @@ var appearance_delete = (data,callback)=>{
         }
     })
 }
-module.exports = {addMenu,addSlider,findAppearance,appearance_update,appearance_delete};
+
+var findCategory =(data,callback)=>{
+    Category.find({category_type:data.type}).sort({created_at: 'desc'}).exec(function (err, docs) {
+        if(err){
+            console.log(err);
+        }else{
+            callback({msg:'success',resdata:docs});
+        }
+    });
+
+}
+
+var category_update = (data,callback)=>{
+    if(data.type == 'status'){
+        Category.update({appearance_id : data.id}, {status :data.value}, (err,result)=>{
+            if(err){
+                console.log(err);
+            }else{
+                callback({msg:'success',data:result});
+            }
+        })
+    }
+}
+
+var category_delete = (data,callback)=>{
+    Category.deleteOne({category_id : data.id}, (err,result)=>{
+        if(err){
+            console.log(err);
+        }else{
+            callback({msg:'success',data:result});
+        }
+    })
+}
+
+
+
+module.exports = {addMenu,
+    addSlider,
+    findAppearance,
+    appearance_update,
+    appearance_delete,
+    findCategory,
+    category_delete,
+    category_update
+};
