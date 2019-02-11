@@ -22,8 +22,31 @@
                                     <div class="row">
                                         <form action="/dashboard/main-category" class="form-horizontal" role="form"  method="POST" enctype="multipart/form-data">
                                             <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="col-md-4 control-label">Select menu</label>
+                                                        <div class="col-md-8">
+                                                            <select class="form-control select2" name="parent_menu_id" >
+                                                                <option value="" selected disabled>Select</option>>
+                                                                <optgroup label="Primary menu">
+                                                                    <% _.each(menulist, function(v,k){ if(v.assign_menu == 'primay_menu'){ %>
+                                                                        <option value="<%= v.appearance_id%>"><%= v.menu_title%></option>
+                                                                    <% } }); %>
+                                                                </optgroup>
+                                                                <optgroup label="Secondary menu">
+                                                                    <% _.each(menulist, function(v,k){ if(v.assign_menu == 'secondary_menu'){ %>
+                                                                        <option value="<%= v.appearance_id%>"><%= v.menu_title%></option>
+                                                                    <% } }); %>
+                                                                </optgroup>
+                                                                <optgroup label="Footer menu">
+                                                                    <% _.each(menulist, function(v,k){ if(v.assign_menu == 'footer_menu'){ %>
+                                                                        <option value="<%= v.appearance_id%>"><%= v.menu_title%></option>
+                                                                    <% } }); %>
+                                                                </optgroup>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 <div class="form-group">
-                                                    <label class="col-md-4 control-label">Category Name</label>
+                                                    <label class="col-md-4 control-label">Category Name *</label>
                                                     <div class="col-md-8">
                                                         <input type="text" class="form-control" name="category_name" placeholder="Write category name..." required>
                                                     </div>
@@ -92,6 +115,7 @@
                                             <thead> 
                                                 <tr>
                                                     <th>Category Name</th>
+                                                    <th>Menu Name</th>
                                                     <th>Image</th>
                                                     <th>Icon</th>
                                                     <th>Description</th>
@@ -103,6 +127,7 @@
                                                 <% _.each(category, function(v,k){ if(v.category_type == 'main_category'){ %> 
                                                 <tr id="_main_cate<%= v.category_id %>">
                                                     <td><%= v.category_name %></td>
+                                                    <td><%= _Obj(menulist,'appearance_id',v.parent_menu_id).menu_title %></td>
                                                     <td class="text-center"><img style="max-width: 100px; max-height: 100px; border-radius: 4px" src="/admin_assets/images/category/<%= v.category_image %>" alt=""></td>
                                                     <td class="text-center"><i class="<%= v.category_icon %>"></i></td>
                                                     <td><%= v.category_desc %></td>

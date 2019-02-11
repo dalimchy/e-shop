@@ -113,6 +113,7 @@ var addCategory = (data,callback)=>{
         category_icon : data.category_icon,
         category_image : data.category_image,
         parent_category_id : data.parent_category_id,
+        parent_menu_id : data.parent_menu_id,
         status : data.status
     }
     var newCategory = new Category(data);

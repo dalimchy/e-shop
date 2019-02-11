@@ -25,7 +25,14 @@ var storage = multer.diskStorage({
 var uploadSliderImg = multer({storage: storage}).single('slider_img');
 var uploadMainCateImg = multer({storage: storage}).single('category_image');
 
-
+var _Obj = (obj,key,value)=>{
+  for (var i = 0; i < obj.length; i++) {
+      if (obj[i][key] === value) {
+          return obj[i];
+      }
+  }
+  return false;
+}
 
 var {
     addMenu,
@@ -225,25 +232,29 @@ router.get('/main-category', function(req,res,next){
     req.session.msg = null;
   }
   if(req.session.login){
-    findCategory((response)=>{
-      if(response.msg == 'success'){
-        console.log(response)
-        var data = {
-          title:'Main-category',
-          msg : null,
-          category : response.resdata,
-          ses_msg : req.session.msg,
-          _ : _,
-          userData : {
-            user_name : req.session.user_name,
-            user_id:req.session.user_id,
-            user_email:req.session.user_email,
-            user_img:req.session.user_img
+    findAppearance({type:'menu'},(resMenu)=>{
+      findCategory((response)=>{
+        if(response.msg == 'success'){
+          console.log(response)
+          var data = {
+            title:'Main-category',
+            msg : null,
+            category : response.resdata,
+            menulist : resMenu.resdata,
+            _Obj : _Obj,
+            ses_msg : req.session.msg,
+            _ : _,
+            userData : {
+              user_name : req.session.user_name,
+              user_id:req.session.user_id,
+              user_email:req.session.user_email,
+              user_img:req.session.user_img
+            }
           }
+          req.session.msg = null;
+          res.render('pages/dashboard/main_category', data);
         }
-        req.session.msg = null;
-        res.render('pages/dashboard/main_category', data);
-      }
+      });
     });
   }else{
     res.redirect('/login');
@@ -264,8 +275,10 @@ router.post('/main-category', function(req,res){
           category_image : ((req.file == undefined) ? null: req.file.filename),
           category_icon : req.body.category_icon,
           parent_category_id : null,
+          parent_menu_id : ((req.body.parent_menu_id == undefined) ? null: req.body.parent_menu_id),
           status : ((req.body.active_status == 'on') ? 1 : 0)
         }
+        console.log(bodyData);
          addCategory(bodyData, (response)=>{
           if(response.msg == 'success'){
             req.session.msg = "Category add successfully!";
@@ -305,14 +318,7 @@ router.post('/category_delete',(req,res)=>{
   }
 });
 
-var _Obj = (obj,key,value)=>{
-    for (var i = 0; i < obj.length; i++) {
-        if (obj[i][key] === value) {
-            return obj[i];
-        }
-    }
-    return false;
-}
+
 
 router.get('/sub-category', function(req,res,next){
   if(req.session.msg == undefined){
@@ -360,6 +366,7 @@ router.post('/sub-category', function(req,res){
           category_image : ((req.file == undefined) ? null: req.file.filename),
           category_icon : req.body.category_icon,
           parent_category_id : req.body.parent_category_id,
+          parent_menu_id : null,
           status : ((req.body.active_status == 'on') ? 1 : 0)
         }
          addCategory(bodyData, (response)=>{
