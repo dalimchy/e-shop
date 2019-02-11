@@ -70,8 +70,8 @@ var appearance_delete = (data,callback)=>{
     })
 }
 
-var findCategory =(data,callback)=>{
-    Category.find({category_type:data.type}).sort({created_at: 'desc'}).exec(function (err, docs) {
+var findCategory =(callback)=>{
+    Category.find().sort({created_at: 'desc'}).exec(function (err, docs) {
         if(err){
             console.log(err);
         }else{
@@ -83,7 +83,7 @@ var findCategory =(data,callback)=>{
 
 var category_update = (data,callback)=>{
     if(data.type == 'status'){
-        Category.update({appearance_id : data.id}, {status :data.value}, (err,result)=>{
+        Category.update({category_id : data.id}, {status :data.value}, (err,result)=>{
             if(err){
                 console.log(err);
             }else{
@@ -103,14 +103,33 @@ var category_delete = (data,callback)=>{
     })
 }
 
+var addCategory = (data,callback)=>{
+    var category_id = uuidv4();
+    var data = {
+        category_id: category_id,
+        category_type: data.category_type,
+        category_name : data.category_name,
+        category_desc : data.category_desc,
+        category_icon : data.category_icon,
+        category_image : data.category_image,
+        status : data.status
+    }
+    var newCategory = new Category(data);
+    newCategory.save().then(res =>{
+        callback({msg:'success',data:data});
+    })
+    .catch(err => console.log(err));
+}
 
 
 module.exports = {addMenu,
     addSlider,
+    addCategory,
     findAppearance,
     appearance_update,
     appearance_delete,
     findCategory,
     category_delete,
     category_update
+    
 };

@@ -46,6 +46,21 @@ function appearance_update(data){
         }
     });
 }
+function category_update(data){
+    $.ajax({
+        type: "POST",
+        url: '/dashboard/category_update',
+        data: data,
+        error: function() {
+            return false;
+         },
+         success: function(res) {
+             if(res.msg == 'success'){
+                 return true;
+            }
+        }
+    });
+}
 
 function appearance_delete(ele){
     var dataid = $(ele).parent('td').attr('data-id')
@@ -63,4 +78,36 @@ function appearance_delete(ele){
             }
         }
     });
+}
+
+function category_delete(ele){
+    var dataid = $(ele).parent('td').attr('data-id')
+    $.ajax({
+        type: "POST",
+        url: '/dashboard/category_delete',
+        data: {id:dataid},
+        error: function() {
+            console.log('failed');
+         },
+         success: function(res) {
+             if(res.msg == 'success'){
+                 $('#_main_cate'+dataid).remove();
+            }
+        }
+    });
+}
+
+
+function update_category(ele,type){
+    if(type == 'status'){
+        if($(ele).attr('data-status') == 'active'){
+            var data = {type:"status",id:$(ele).parent('td').attr('data-id'),value:0}
+            category_update(data);
+            $(ele).removeClass('btn-success').addClass('btn-danger').attr('data-status', 'inactive').text('In-Active');
+        }else{
+            var data = {type:"status",id:$(ele).parent('td').attr('data-id'),value:1}
+            category_update(data);
+            $(ele).removeClass('btn-danger').addClass('btn-success').attr('data-status', 'active').text('Active');
+        }
+    }
 }

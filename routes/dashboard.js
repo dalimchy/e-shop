@@ -7,17 +7,23 @@ var storage = multer.diskStorage({
     destination: (req, file, cb) => {
       if(file.fieldname == 'slider_img'){
         cb(null, './public/admin_assets/images/slider/')
+      }else if(file.fieldname == 'category_image'){
+        cb(null, './public/admin_assets/images/category/');
       }
     },
     filename: (req, file, cb) => {
       if(file.fieldname == 'slider_img'){
         var fileType = file.originalname.split('.');
-        cb(null, fileType[0]+ '@' + Date.now()+'.'+fileType[1]);
+        cb(null, fileType[0]+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
+      }else if(file.fieldname == 'category_image'){
+        var fileType = file.originalname.split('.');
+        cb(null, fileType[0]+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
       }
       
     }
 });
 var uploadSliderImg = multer({storage: storage}).single('slider_img');
+var uploadMainCateImg = multer({storage: storage}).single('category_image');
 
 
 
@@ -26,7 +32,11 @@ var {
     findAppearance,
     appearance_update,
     appearance_delete,
-    addSlider
+    addSlider,
+    addCategory,
+    findCategory,
+    category_update,
+    category_delete
   } = require('./../utils/dashboard');
 
 /* GET home page. */
@@ -215,32 +225,143 @@ router.get('/main-category', function(req,res,next){
     req.session.msg = null;
   }
   if(req.session.login){
-    var data = {
-      title:'Main-category',
-      msg : null,
-      ses_msg : req.session.msg,
-      _ : _,
-      userData : {
-        user_name : req.session.user_name,
-        user_id:req.session.user_id,
-        user_email:req.session.user_email,
-        user_img:req.session.user_img
+    findCategory((response)=>{
+      if(response.msg == 'success'){
+        console.log(response)
+        var data = {
+          title:'Main-category',
+          msg : null,
+          category : response.resdata,
+          ses_msg : req.session.msg,
+          _ : _,
+          userData : {
+            user_name : req.session.user_name,
+            user_id:req.session.user_id,
+            user_email:req.session.user_email,
+            user_img:req.session.user_img
+          }
+        }
+        req.session.msg = null;
+        res.render('pages/dashboard/main_category', data);
       }
-    }
-    console.log(data.userData);
-    res.render('pages/dashboard/main_category', data);
+    });
   }else{
     res.redirect('/login');
   }
 });
+
+
 router.post('/main-category', function(req,res){
-  console.log(238,req.body);
-  // if(req.session.login){
-  //   res.send('se')
-  // }else{
-  //   res.redirect('/login');
-  // }
+  if(req.session.login){
+    uploadMainCateImg(req,res, function(err){
+      if(err){
+        console.log(err)
+      }else{
+        var bodyData = {
+          category_type : 'main_category',
+          category_name : ((req.body.category_name == '') ? null: req.body.category_name),
+          category_desc : ((req.body.category_desc == '') ? null: req.body.category_desc),
+          category_image : ((req.file == undefined) ? null: req.file.filename),
+          category_icon : req.body.category_icon,
+          status : ((req.body.active_status == 'on') ? 1 : 0)
+        }
+         addCategory(bodyData, (response)=>{
+          if(response.msg == 'success'){
+            req.session.msg = "Category add successfully!";
+            res.redirect('/dashboard/main-category');
+          }else{
+            req.session.msg = "Error !!";
+            res.redirect('/dashboard/main-category');
+          }
+         }); 
+      }
+    })
+  }else{
+    res.redirect('/login');
+  }
 });
- 
+
+router.post('/category_update',(req,res)=>{
+  if(req.session.login){
+    category_update(req.body, (response)=>{
+      if(response.msg == 'success'){
+        res.send(response);
+      }
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
+router.post('/category_delete',(req,res)=>{
+  if(req.session.login){
+    category_delete(req.body, (response)=>{
+      if(response.msg == 'success'){
+        res.send(response);
+      }
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
+
+router.get('/sub-category', function(req,res,next){
+  if(req.session.msg == undefined){
+    req.session.msg = null;
+  }
+  if(req.session.login){
+    findCategory((response)=>{
+      if(response.msg == 'success'){
+        console.log(response)
+        var data = {
+          title:'Sub-category',
+          msg : null,
+          category : response.resdata,
+          ses_msg : req.session.msg,
+          _ : _,
+          userData : {
+            user_name : req.session.user_name,
+            user_id:req.session.user_id,
+            user_email:req.session.user_email,
+            user_img:req.session.user_img
+          }
+        }
+        req.session.msg = null;
+        res.render('pages/dashboard/sub_category', data);
+      }
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
+
+router.post('/sub-category', function(req,res){
+  if(req.session.login){
+    uploadMainCateImg(req,res, function(err){
+      if(err){
+        console.log(err)
+      }else{
+        var bodyData = {
+          category_type : 'sub_category',
+          category_name : ((req.body.category_name == '') ? null: req.body.category_name),
+          category_desc : ((req.body.category_desc == '') ? null: req.body.category_desc),
+          category_image : ((req.file == undefined) ? null: req.file.filename),
+          category_icon : req.body.category_icon,
+          status : ((req.body.active_status == 'on') ? 1 : 0)
+        }
+         addCategory(bodyData, (response)=>{
+          if(response.msg == 'success'){
+            req.session.msg = "Category add successfully!";
+            res.redirect('/dashboard/sub-category');
+          }else{
+            req.session.msg = "Error !!";
+            res.redirect('/dashboard/sub-category');
+          }
+         }); 
+      }
+    })
+  }else{
+    res.redirect('/login');
+  }
+});
 
 module.exports = router;
