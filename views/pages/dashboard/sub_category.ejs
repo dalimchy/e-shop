@@ -25,10 +25,10 @@
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label">Select Main Category</label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control select2" required >
+                                                        <select class="form-control select2" name="parent_category_id" required >
                                                             <option value="">Select</option>>
                                                             <% _.each(category, function(v,k){ if(v.category_type == 'main_category'){ %> 
-                                                                <option value="AK"><%= v.category_name%></option>
+                                                                <option value="<%= v.category_id%>"><%= v.category_name%></option>
                                                             <% } });%>
                                                         </select>
                                                     </div>
@@ -103,6 +103,7 @@
                                             <thead> 
                                                 <tr>
                                                     <th>Sub Category Name</th>
+                                                    <th>Parent Category Name</th>
                                                     <th>Image</th>
                                                     <th>Icon</th>
                                                     <th>Description</th>
@@ -114,6 +115,7 @@
                                                 <% _.each(category, function(v,k){ if(v.category_type == 'sub_category'){ %> 
                                                 <tr id="_main_cate<%= v.category_id %>">
                                                     <td><%= v.category_name %></td>
+                                                    <td><%= _Obj(category,'category_id',v.parent_category_id).category_name %></td>
                                                     <td class="text-center"><img style="max-width: 100px; max-height: 100px; border-radius: 4px" src="/admin_assets/images/category/<%= v.category_image %>" alt=""></td>
                                                     <td class="text-center"><i class="<%= v.category_icon %>"></i></td>
                                                     <td><%= v.category_desc %></td>

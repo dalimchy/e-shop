@@ -28,6 +28,10 @@ const categorySchema = new Schema({
         type:String,
         default:null
     },
+    parent_category_id:{
+        type:String,
+        default:null
+    },
     status:{
         type:String,
         required:true

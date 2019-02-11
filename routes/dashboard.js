@@ -263,6 +263,7 @@ router.post('/main-category', function(req,res){
           category_desc : ((req.body.category_desc == '') ? null: req.body.category_desc),
           category_image : ((req.file == undefined) ? null: req.file.filename),
           category_icon : req.body.category_icon,
+          parent_category_id : null,
           status : ((req.body.active_status == 'on') ? 1 : 0)
         }
          addCategory(bodyData, (response)=>{
@@ -304,6 +305,15 @@ router.post('/category_delete',(req,res)=>{
   }
 });
 
+var _Obj = (obj,key,value)=>{
+    for (var i = 0; i < obj.length; i++) {
+        if (obj[i][key] === value) {
+            return obj[i];
+        }
+    }
+    return false;
+}
+
 router.get('/sub-category', function(req,res,next){
   if(req.session.msg == undefined){
     req.session.msg = null;
@@ -318,6 +328,7 @@ router.get('/sub-category', function(req,res,next){
           category : response.resdata,
           ses_msg : req.session.msg,
           _ : _,
+          _Obj : _Obj,
           userData : {
             user_name : req.session.user_name,
             user_id:req.session.user_id,
@@ -334,6 +345,8 @@ router.get('/sub-category', function(req,res,next){
   }
 });
 
+
+
 router.post('/sub-category', function(req,res){
   if(req.session.login){
     uploadMainCateImg(req,res, function(err){
@@ -346,6 +359,7 @@ router.post('/sub-category', function(req,res){
           category_desc : ((req.body.category_desc == '') ? null: req.body.category_desc),
           category_image : ((req.file == undefined) ? null: req.file.filename),
           category_icon : req.body.category_icon,
+          parent_category_id : req.body.parent_category_id,
           status : ((req.body.active_status == 'on') ? 1 : 0)
         }
          addCategory(bodyData, (response)=>{
