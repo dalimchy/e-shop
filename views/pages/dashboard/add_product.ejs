@@ -1,0 +1,162 @@
+<%- include('../../layouts/dashboard/head') %>
+<%- include('../../layouts/dashboard/topbar') %>
+<%- include('../../layouts/dashboard/left_bar') %>
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="content-page">
+                <!-- Start content -->
+                <div class="content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-box">
+                                    <h4 class="header-title m-t-0 m-b-30">Add Main Category</h4>
+                                    <% if(ses_msg !== null){ %>
+                                        <div class="alert alert-success alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <%= ses_msg %>
+                                        </div>
+                                    <%   } %>
+                                    <div class="row">
+                                        <form action="/dashboard/main-category" class="form-horizontal" role="form"  method="POST" enctype="multipart/form-data">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Product Name *</label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" name="product_name" placeholder="Write product name..." required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Product Model</label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" name="product_model" placeholder="Write product model...">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Select main category *</label>
+                                                    <div class="col-md-8">
+                                                        <select class="form-control select2" name="main_category_id" id='select_main_category' required >
+                                                            <option value="" >Select</option>>
+                                                            <% _.each(category, function(v,k){ if(v.category_type == 'main_category'){ %> 
+                                                                <option value="<%= v.category_id%>"><%= v.category_name%></option>
+                                                            <% } });%>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Select sub category *</label>
+                                                    <div class="col-md-8">
+                                                        <select class="form-control" id="select_sub_category" name="sub_category_id" required >
+                                                            <option value="">Select</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Product orginal price *</label>
+                                                    <div class="col-md-8">
+                                                        <input type="number" class="form-control" name="product_orgianl_price" placeholder="Write orginal price..." required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Product discount price</label>
+                                                    <div class="col-md-8">
+                                                        <input type="number" class="form-control" name="product_discount_price" placeholder="Write discount price...">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Product label</label>
+                                                    <div class="col-md-8">
+                                                        <div class="radio radio-info radio-inline">
+                                                        <input type="radio" id="inlineRadio1" value="Hot" name="product_label" >
+                                                        <label for="inlineRadio1">Hot</label>
+                                                    </div>
+                                                    <div class="radio radio-purple radio-inline">
+                                                        <input type="radio" id="inlineRadio2" value="Sale" name="product_label">
+                                                        <label for="inlineRadio2">Sale</label>
+                                                    </div>
+                                                    <div class="radio radio-pink radio-inline">
+                                                        <input type="radio" id="inlineRadio3" value="New" name="product_label">
+                                                        <label for="inlineRadio3">New</label>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- end col -->
+                                            <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="col-md-12 text-center">Freature Image * </label>
+                                                        <div class="col-md-10 col-md-offset-1">
+                                                            <input type="file" class="dropify" data-default-file="" value="" required name="feature_image" accept="image/*">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-10 col-md-offset-1" onclick="openMoreImage(this)">
+                                                           <div class="btn btn-block btn-inverse btn-trans waves-effect w-md waves-inverse"><i class="fa fa-plus-circle"></i> Add More</div>
+                                                        </div>
+                                                    </div>
+
+                                            </div><!-- end col -->
+                                            <div class="col-lg-12 text-center">
+                                                <div class="form-group">
+                                                    <label class="col-md-2 control-label">Short Description</label>
+                                                    <div class="col-md-10">
+                                                        <textarea id="product_short_desc" name="sort_desc" class="form-control" rows="2" placeholder="Write short description..."></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-2 control-label">Long Description</label>
+                                                    <div class="col-md-10">
+                                                        <textarea id="product_long_desc" name="long_desc" class="form-control" rows="4" placeholder="Write long description..."></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-6 text-right">Status :</label>
+                                                    <div class="col-md-6 text-left">
+                                                        <input type="checkbox" checked data-plugin="switchery" data-color="#10c469" data-size="small" data-switchery="true" style="display: none;" name="active_status">
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light w-xs m-b-5">Submit</button>
+                                            </div>
+                                        </form>
+
+
+                                    </div><!-- end row -->
+                                </div>
+                            </div><!-- end col -->
+                        </div>
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+                <footer class="footer text-right">
+                    2016 - 2017 © Adminto.
+                </footer>
+
+            </div>
+
+<input id="moreImageInput" type="file" name="multiple_image[]" multiple accept="image/*" onchange="moreImageOnchange(event,this)" style="visibility: hidden;">
+
+<script type="text/javascript">
+    function openMoreImage(ele){
+        $('#moreImageInput').click();
+    }
+
+    function moreImageOnchange(e,ele){
+        console.log(146,$(ele).get(0).files)
+        var names = [];
+        for (var i = 0; i < $(ele).get(0).files.length; ++i) {
+            names.push($(ele).get(0).files[i].name);
+        }
+        console.log(names);
+    }
+
+</script>
+
+            <!-- ============================================================== -->
+            <!-- End Right content here -->
+            <!-- ============================================================== -->
+<%- include('../../layouts/dashboard/right_bar') %>
+<%- include('../../layouts/dashboard/foot') %>
+
+

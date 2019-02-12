@@ -385,4 +385,34 @@ router.post('/sub-category', function(req,res){
   }
 });
 
+
+router.get('/add-product', (req,res)=>{
+  if(req.session.msg == undefined){
+    req.session.msg = null;
+  }
+  if(req.session.login){
+    findCategory((response)=>{
+    var data = {
+          title:'Add-product',
+          msg : null,
+          ses_msg : req.session.msg,
+          category : response.resdata,
+          _ : _,
+          _Obj : _Obj,
+          userData : {
+            user_name : req.session.user_name,
+            user_id:req.session.user_id,
+            user_email:req.session.user_email,
+            user_img:req.session.user_img
+          }
+        }
+        req.session.msg = null;
+        res.render('pages/dashboard/add_product', data);
+    });
+
+  }else{
+    res.redirect('/login');
+  }
+});
+
 module.exports = router;
