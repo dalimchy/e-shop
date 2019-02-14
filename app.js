@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var _ = require('lodash');
+var fs = require('file-system');
 
 //DB config
 const db = require('./config/keys').mongoURI;

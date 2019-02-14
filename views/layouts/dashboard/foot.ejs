@@ -98,6 +98,8 @@
 <script src="/admin_assets/js/custom.js"></script>
 
 <% if(title == 'Sub-category' || title == 'Add-product'){%> 
+ <script src="/admin_assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+
   <!--form wysiwig js-->
   <script src="/admin_assets/plugins/tinymce/tinymce.min.js"></script>
 
@@ -135,6 +137,20 @@
           }
       });
   </script>
+  <script>
+    $(function () {
+        // sortable
+        $(".sortable").sortable({
+            connectWith: '.sortable',
+            items: '.card-draggable',
+            revert: true,
+            placeholder: 'card-draggable-placeholder',
+            forcePlaceholderSize: true,
+            opacity: 0.77,
+            cursor: 'move'
+        });
+    });
+</script>
 <% } %>
 </body>
 </html>

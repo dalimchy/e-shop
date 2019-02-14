@@ -1,7 +1,14 @@
 <%- include('../../layouts/dashboard/head') %>
 <%- include('../../layouts/dashboard/topbar') %>
 <%- include('../../layouts/dashboard/left_bar') %>
-
+<style type="text/css">
+    #viewProductImage .portlet-title{
+        white-space: nowrap;
+        overflow: hidden;
+        width: 115px;
+        text-overflow: ellipsis;
+    }
+</style>
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== -->
@@ -90,6 +97,13 @@
                                                             <input type="file" class="dropify" data-default-file="" value="" required name="feature_image" accept="image/*">
                                                         </div>
                                                     </div>
+                                                    <div class="sortable">
+                                                        <div class="row">
+                                                            <div class="col-md-12" id="viewProductImage">
+                                                                
+                                                            </div>
+                                                        </div><!-- Row -->
+                                                    </div><!-- Sortable -->
                                                     <div class="form-group">
                                                         <div class="col-md-10 col-md-offset-1" onclick="openMoreImage(this)">
                                                            <div class="btn btn-block btn-inverse btn-trans waves-effect w-md waves-inverse"><i class="fa fa-plus-circle"></i> Add More</div>
@@ -135,22 +149,115 @@
 
             </div>
 
-<input id="moreImageInput" type="file" name="multiple_image[]" multiple accept="image/*" onchange="moreImageOnchange(event,this)" style="visibility: hidden;">
-
+<form id="uploadForm"
+         enctype="multipart/form-data"
+         method="post" >
+      <input id="moreImageInput" type="file" name="productImage" multiple accept="image/*" onchange="moreImageOnchange(event,this)"/>
+      <input type="submit" value="Upload Image" name="submit">
+</form>
+<script src="https://momentjs.com/downloads/moment.js"></script>
 <script type="text/javascript">
     function openMoreImage(ele){
         $('#moreImageInput').click();
     }
-
+    var product_imagesArray = [];
     function moreImageOnchange(e,ele){
-        console.log(146,$(ele).get(0).files)
-        var names = [];
-        for (var i = 0; i < $(ele).get(0).files.length; ++i) {
-            names.push($(ele).get(0).files[i].name);
+        var files = ele.files;
+        for (var i = 0; i < files.length; i++) {
+            var formData = new FormData();
+            var entries = formData.entries();
+            for(var pair of entries )
+            {
+               formData.delete( pair[0] );
+            }
+            var slid = Number(moment().unix()) + i + 1;
+            formData.append('productImage', files[i]);
+            $.ajax({
+                // xhr: function() {
+                // var xhr = new XMLHttpRequest();
+                //     xhr.upload.addEventListener("loadstart", function(et) {
+                //         this.progressId = slid;
+                //         console.log(167,this.progressId)
+                        
+                //     });
+                //     xhr.upload.addEventListener("progress", function(evt) {
+                //         if (evt.lengthComputable) {
+                //             var percentComplete = evt.loaded / evt.total;
+                //             var percom = Math.ceil(percentComplete * 100);
+                //             console.log(174,percom);
+                            
+                //         }
+                //     }, false);
+                //     return xhr;
+                // },
+                type: 'POST',
+                url: '/dashboard/productImgUp',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data : formData,
+                error: function(err){
+                    console.log(err);
+                },
+                success: function(res){
+                    if(res !== null){
+                        product_imagesArray.push(res);
+                        $('#viewProductImage').append(imageviewDesign(res));
+                    }
+                }        
+            });
+
+
         }
-        console.log(names);
+
+    }
+    function unlinkThisImage(type,val){
+
+        var data = {
+            type:type,
+            value : val
+        }
+        console.log(data);
+        $.ajax({
+                type: 'POST',
+                url: '/dashboard/unlinkFile',
+                data :data,
+                error: function(err){
+                    console.log(err);
+                },
+                success: function(res){
+                    console.log(res);
+                }        
+            });
     }
 
+    var customSerial = 0;
+    function imageviewDesign(value){
+        console.log(value)
+        customSerial = customSerial + 1;
+        var name = value.split('@');
+        var name2 = value.split('.');
+        var html = '';
+            html +=         '<div class="col-md-6">';
+            html +=            '<div class="portlet card-draggable">';
+            html +=             '<div class="portlet-heading bg-purple">';
+            html +=                 '<h3 class="portlet-title">'+name[0]+'</h3>';
+            html +=                 '<div class="portlet-widgets">';
+            html +=                     '<a data-toggle="collapse" data-parent="#accordion1" href="#bg-default'+customSerial+'"><i class="zmdi zmdi-minus"></i></a>';
+            html +=                     '<a onclick="unlinkThisImage(\'productImage\',\''+value+'\')" data-toggle="remove" style="cursor:pointer"><i class="zmdi zmdi-close"></i></a>';
+            html +=                 '</div>';
+            html +=                 '<div class="clearfix"></div>';
+            html +=             '</div>';
+            html +=             '<div id="bg-default'+customSerial+'" class="panel-collapse collapse in">';
+            html +=                 '<div class="portlet-body" style="border: 1px solid #5b68bc;">';
+            html +=                    '<img src="/admin_assets/images/product_images/'+value+'" alt="image" style="max-width:100%; max-height:100%;border-radius:4px;">'
+            html +=                 '</div>';
+            html +=             '</div>';
+            html +=            '</div>';
+            html +=        '</div>';
+
+            return html;
+    }
 </script>
 
             <!-- ============================================================== -->

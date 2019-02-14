@@ -2,13 +2,18 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var _ = require('lodash');
+var fs = require('file-system');
 var multer = require('multer');
+const gulp = require('gulp-chmod');
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
+      console.log(8,file.fieldname);
       if(file.fieldname == 'slider_img'){
         cb(null, './public/admin_assets/images/slider/')
       }else if(file.fieldname == 'category_image'){
         cb(null, './public/admin_assets/images/category/');
+      }else if(file.fieldname == 'productImage'){
+        cb(null, './public/admin_assets/images/product_images/');
       }
     },
     filename: (req, file, cb) => {
@@ -18,12 +23,16 @@ var storage = multer.diskStorage({
       }else if(file.fieldname == 'category_image'){
         var fileType = file.originalname.split('.');
         cb(null, fileType[0]+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
+      }else if(file.fieldname == 'productImage'){
+        var fileType = file.originalname.split('.');
+        cb(null, fileType[0]+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
       }
       
     }
 });
 var uploadSliderImg = multer({storage: storage}).single('slider_img');
 var uploadMainCateImg = multer({storage: storage}).single('category_image');
+var productImageUpload = multer({storage: storage}).array('productImage', 50);
 
 var _Obj = (obj,key,value)=>{
   for (var i = 0; i < obj.length; i++) {
@@ -415,4 +424,35 @@ router.get('/add-product', (req,res)=>{
   }
 });
 
+
+
+router.post('/productImgUp', (req,res)=>{
+   productImageUpload(req,res,(err)=>{
+    if(err){
+      console.log(429,err);
+    }else{
+     res.send(req.files[0].filename);
+    }
+  })
+});
+
+router.post('/unlinkFile', (req,res)=>{
+  console.log(req.body);
+  var path = '../public/admin_assets/images/product_images/'+req.body.value+'';
+  gulp.task('default', () =>
+    gulp.src(path)
+        .pipe(chmod(0o755))
+        .pipe(gulp.dest('dist'))
+);
+  console.log(path);
+  fs.unlink(path, (err) => {
+    if (err){
+      console.log(err);
+    }else{
+      console.log(req.body);
+      res.send('success');
+    }
+    
+  });
+});
 module.exports = router;
