@@ -27,7 +27,8 @@
                                         </div>
                                     <%   } %>
                                     <div class="row">
-                                        <form action="/dashboard/main-category" class="form-horizontal" role="form"  method="POST" enctype="multipart/form-data">
+                                        <form action="/dashboard/add-product" class="form-horizontal" role="form"  method="POST" enctype="multipart/form-data">
+                                            <input type="text" name="productImage" id="hiddenProductImage" style="display: none">
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label">Product Name *</label>
@@ -42,9 +43,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-md-4 control-label">Product Quantity *</label>
+                                                    <div class="col-md-8">
+                                                        <input type="number" class="form-control" placeholder="Write Product Quantity..." name="product_qty" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-md-4 control-label">Select main category *</label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control select2" name="main_category_id" id='select_main_category' required >
+                                                        <select class="form-control select2" name="main_category_id" id='select_main_category' required onchange="categoryOnchange(this)">
                                                             <option value="" >Select</option>>
                                                             <% _.each(category, function(v,k){ if(v.category_type == 'main_category'){ %> 
                                                                 <option value="<%= v.category_id%>"><%= v.category_name%></option>
@@ -53,10 +60,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-md-4 control-label">Select sub category *</label>
+                                                    <label class="col-md-4 control-label">Select sub category</label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control" id="select_sub_category" name="sub_category_id" required >
-                                                            <option value="">Select</option>
+                                                        <select class="form-control" id="select_sub_category" name="sub_category_id" >
+                                                            
                                                         </select>
                                                     </div>
                                                 </div>
@@ -121,7 +128,7 @@
                                                 <div class="form-group">
                                                     <label class="col-md-2 control-label">Long Description</label>
                                                     <div class="col-md-10">
-                                                        <textarea id="product_long_desc" name="long_desc" class="form-control" rows="4" placeholder="Write long description..."></textarea>
+                                                        <textarea  id="product_long_desc" name="long_desc" class="form-control" rows="4" placeholder="Write long description..."></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -130,7 +137,7 @@
                                                         <input type="checkbox" checked data-plugin="switchery" data-color="#10c469" data-size="small" data-switchery="true" style="display: none;" name="active_status">
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary waves-effect waves-light w-xs m-b-5">Submit</button>
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light w-xs m-b-5"  id="productSubmitBtn">Submit</button>
                                             </div>
                                         </form>
 
@@ -148,7 +155,6 @@
                 </footer>
 
             </div>
-
 <form id="uploadForm"
          enctype="multipart/form-data"
          method="post" >
@@ -202,6 +208,7 @@
                 success: function(res){
                     if(res !== null){
                         product_imagesArray.push(res);
+                        $('#hiddenProductImage').val(product_imagesArray);
                         $('#viewProductImage').append(imageviewDesign(res));
                     }
                 }        
@@ -226,7 +233,8 @@
                     console.log(err);
                 },
                 success: function(res){
-                    console.log(res);
+                    removeA(product_imagesArray, val);
+                    $('#hiddenProductImage').val(product_imagesArray);
                 }        
             });
     }
@@ -257,6 +265,33 @@
             html +=        '</div>';
 
             return html;
+    }
+
+    function categoryOnchange(ele){
+        var value = $(ele).val();
+        if(value !== ''){
+        $.ajax({
+                type: 'POST',
+                url: '/dashboard/findSubCate',
+                data :{data:value},
+                error: function(err){
+                    console.log(err);
+                },
+                success: function(res){
+                    if(res.msg == 'success'){
+                        $('#select_sub_category').html('');
+                        $('#select_sub_category').val('');
+                        $.each(res.data, (k,v)=>{
+                            $('#select_sub_category').append('<option value="'+v.cateId+'">'+v.name+'</option>');
+                        });
+                    }else{
+                        $('#select_sub_category').html('');
+                    }
+                }        
+            });
+        }else{
+            console.log('null');
+        }
     }
 </script>
 

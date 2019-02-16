@@ -16,6 +16,17 @@ function selectIcon(ele,type){
     }
 }
 
+function removeA(arr) {
+    var what, a = arguments, L = a.length, ax;
+    while (L > 1 && arr.length) {
+        what = a[--L];
+        while ((ax = arr.indexOf(what)) !== -1) {
+            arr.splice(ax, 1);
+        }
+    }
+    return arr;
+}
+
 function update_appear(ele,type){
     if(type == 'status'){
         if($(ele).attr('data-status') == 'active'){

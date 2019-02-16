@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var _ = require('lodash');
 var fs = require('file-system');
 var multer = require('multer');
-const gulp = require('gulp-chmod');
+const uuidv4 = require('uuid/v4');
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
       console.log(8,file.fieldname);
@@ -14,24 +14,35 @@ var storage = multer.diskStorage({
         cb(null, './public/admin_assets/images/category/');
       }else if(file.fieldname == 'productImage'){
         cb(null, './public/admin_assets/images/product_images/');
+      }else if(file.fieldname == 'feature_image'){
+        cb(null, './public/admin_assets/images/product_feature_img/');
+
       }
     },
     filename: (req, file, cb) => {
       if(file.fieldname == 'slider_img'){
+        console.log(file.originalname);
         var fileType = file.originalname.split('.');
-        cb(null, fileType[0]+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
+        cb(null, fileType[0].split(' ').join('_')+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
       }else if(file.fieldname == 'category_image'){
         var fileType = file.originalname.split('.');
-        cb(null, fileType[0]+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
+        cb(null, fileType[0].split(' ').join('_')+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
       }else if(file.fieldname == 'productImage'){
         var fileType = file.originalname.split('.');
-        cb(null, fileType[0]+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
+        var fileName = fileType[0].split(',').join('_');
+        cb(null, fileName.split(' ').join('_')+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
+      }else if(file.fieldname == 'feature_image'){
+        var fileType = file.originalname.split('.');
+        var fileName = fileType[0].split(',').join('_');
+        cb(null, fileName.split(' ').join('_')+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
+
       }
       
     }
 });
 var uploadSliderImg = multer({storage: storage}).single('slider_img');
 var uploadMainCateImg = multer({storage: storage}).single('category_image');
+var productFreatureImage = multer({storage: storage}).single('feature_image');
 var productImageUpload = multer({storage: storage}).array('productImage', 50);
 
 var _Obj = (obj,key,value)=>{
@@ -52,7 +63,10 @@ var {
     addCategory,
     findCategory,
     category_update,
-    category_delete
+    category_delete,
+    findSubCategory,
+    addNewProduct,
+    findPaginateProduct
   } = require('./../utils/dashboard');
 
 /* GET home page. */
@@ -427,32 +441,163 @@ router.get('/add-product', (req,res)=>{
 
 
 router.post('/productImgUp', (req,res)=>{
-   productImageUpload(req,res,(err)=>{
-    if(err){
-      console.log(429,err);
-    }else{
-     res.send(req.files[0].filename);
-    }
-  })
+  if(req.session.login){
+    productImageUpload(req,res,(err)=>{
+     if(err){
+       console.log(429,err);
+     }else{
+      res.send(req.files[0].filename);
+     }
+   });
+  }else{
+    res.redirect('/login');
+  }
 });
 
 router.post('/unlinkFile', (req,res)=>{
-  console.log(req.body);
-  var path = '../public/admin_assets/images/product_images/'+req.body.value+'';
-  gulp.task('default', () =>
-    gulp.src(path)
-        .pipe(chmod(0o755))
-        .pipe(gulp.dest('dist'))
-);
-  console.log(path);
-  fs.unlink(path, (err) => {
-    if (err){
-      console.log(err);
-    }else{
-      console.log(req.body);
-      res.send('success');
-    }
+  if(req.session.login){
+    var path = '/admin_assets/images/product_images/'+req.body.value+'';
     
-  });
+    const fs = require('fs');
+  
+    fs.unlink("public"+path,function(err){
+      if(err)
+        res.send('err');
+  
+        res.send('File deleted!');
+    });
+  }else{
+    res.redirect('/login');
+  }
 });
+
+router.post('/add-product',(req,res)=>{
+  if(req.session.login){
+    productFreatureImage(req,res, (err)=>{
+      if(err){
+        console.log(err);
+      }else{
+        var proImgeArray = req.body.productImage.split(',');
+
+        var product_id = uuidv4();
+        var data = {
+                  product_id : product_id,
+                  product_name : req.body.product_name,
+                  product_model : ((req.body.product_model == '') ? null: req.body.product_model),
+                  product_qty : ((req.body.product_qty == '') ? 0: req.body.product_qty),
+                  product_main_category_id:req.body.main_category_id,
+                  product_sub_category_id : ((req.body.sub_category_id == '') ? null: req.body.sub_category_id),
+                  product_label: ((req.body.product_label == '') ? null: req.body.product_label),
+                  product_short_desc : ((req.body.sort_desc == '') ? null: req.body.sort_desc),
+                  product_long_desc : ((req.body.long_desc == '') ? null: req.body.long_desc),
+                  product_price : ((req.body.product_orgianl_price == '') ? 0: req.body.product_orgianl_price),
+                  product_discount_price : ((req.body.product_discount_price == '') ? null: req.body.product_discount_price),
+                  product_feature_img : ((req.file == undefined) ? 'demo.png': req.file.filename),
+                  product_image : ((proImgeArray[0] !== '') ? proImgeArray:[]),
+                  status : ((req.body.active_status == 'on') ? 1 : 0)
+                }
+
+        addNewProduct(data,(docs)=>{
+            if(docs.msg == 'success'){
+              req.session.msg = "Product add successfully!";
+              res.redirect('/dashboard/add-product');
+            }else{
+              req.session.msg = "Error !!";
+              res.redirect('/dashboard/add-product');
+            }
+        });
+      }
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
+
+router.post('/findSubCate',(req,res)=>{
+  if(req.session.login){
+    findSubCategory(req.body.data,(response)=>{
+      var cdData = [];
+      _.each(response, (v,k)=>{
+          var data = {
+            name:v.category_name,
+            cateId:v.category_id
+          }
+          cdData.push(data);
+      });
+      res.send({msg:"success",data:cdData});
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
+
+router.get('/manage-product', (req,res)=>{
+  console.log(req.params)
+  if(req.session.msg == undefined){
+    req.session.msg = null;
+  }
+  if(req.session.login){
+    var reqData = {
+      pageNumber: 1,
+      dataLimit : 10,
+    }
+    findPaginateProduct(reqData,(response)=>{
+      if(response.msg == 'success'){
+        var data = {
+          title:'Manage-product',
+          msg : null,
+          ses_msg : req.session.msg,
+          _ : _,
+          product : response.data,
+          _Obj : _Obj,
+          userData : {
+            user_name : req.session.user_name,
+            user_id:req.session.user_id,
+            user_email:req.session.user_email,
+            user_img:req.session.user_img
+          }
+        }
+        req.session.msg = null;
+        res.render('pages/dashboard/manage_product', data);
+      }
+    });
+  }else{
+    res.redirect('/login');
+  } 
+});
+
+router.get('/manage-product/:page', (req,res)=>{
+  if(req.session.msg == undefined){
+    req.session.msg = null;
+  }
+  if(req.session.login){
+    var reqData = {
+      pageNumber: req.params.page,
+      dataLimit : 10,
+    }
+    findPaginateProduct(reqData,(response)=>{
+      if(response.msg == 'success'){
+        var data = {
+          title:'Manage-product',
+          msg : null,
+          ses_msg : req.session.msg,
+          _ : _,
+          product : response.data,
+          _Obj : _Obj,
+          userData : {
+            user_name : req.session.user_name,
+            user_id:req.session.user_id,
+            user_email:req.session.user_email,
+            user_img:req.session.user_img
+          }
+        }
+        req.session.msg = null;
+        res.render('pages/dashboard/manage_product', data);
+      }
+    });
+  }else{
+    res.redirect('/login');
+  } 
+});
+
 module.exports = router;

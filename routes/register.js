@@ -10,7 +10,7 @@ var storage = multer.diskStorage({
       if(file.fieldname == 'profile_pic'){
         var user_name = req.body.name;
         var fileType = file.originalname.split('.');
-        cb(null, user_name.split(' ').join('_')+ '@' + Date.now()+'.'+fileType[1]);
+        cb(null, user_name.split(' ').join('_')+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
       }
       
     }

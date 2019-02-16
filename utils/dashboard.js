@@ -1,9 +1,13 @@
 var express = require('express');
 var router = express.Router();
 const uuidv4 = require('uuid/v4');
+var mongoosePaginate = require('mongoose-paginate');
 
 const Appearance = require('../models/Appearance');
 const Category = require('../models/Category');
+const Product = require('../models/Product');
+
+// schema.plugin(mongoosePaginate);
 
 var addMenu =(data,callback)=>{
     var appearance_id = uuidv4();
@@ -123,6 +127,33 @@ var addCategory = (data,callback)=>{
     .catch(err => console.log(err));
 }
 
+var findSubCategory = (data,callback)=>{
+    Category.find({ parent_category_id: data }, (err,docs)=>{
+        if(err){
+            console.log(err);
+        }else{
+            callback(docs);
+        }
+    });
+}
+
+var addNewProduct = (data,callback)=>{
+    var newProduct = new Product(data);
+    newProduct.save().then(res =>{
+        callback({msg:'success',data:data});
+    })
+    .catch(err => console.log(err));
+}
+
+var findPaginateProduct = (data,callback)=>{
+    Product.paginate({}, { page: data.pageNumber, limit: data.dataLimit,sort:{ created_at: 'desc' } }, function(err, result) {
+        if(err){
+            console.log(err);
+        }else{
+            callback({msg:'success',data:result});
+        }
+    });
+}
 
 module.exports = {addMenu,
     addSlider,
@@ -132,6 +163,9 @@ module.exports = {addMenu,
     appearance_delete,
     findCategory,
     category_delete,
-    category_update
+    category_update,
+    findSubCategory,
+    addNewProduct,
+    findPaginateProduct
     
 };
