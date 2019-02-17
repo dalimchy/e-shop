@@ -7,7 +7,6 @@ var multer = require('multer');
 const uuidv4 = require('uuid/v4');
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      console.log(8,file.fieldname);
       if(file.fieldname == 'slider_img'){
         cb(null, './public/admin_assets/images/slider/')
       }else if(file.fieldname == 'category_image'){
@@ -21,7 +20,6 @@ var storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
       if(file.fieldname == 'slider_img'){
-        console.log(file.originalname);
         var fileType = file.originalname.split('.');
         cb(null, fileType[0].split(' ').join('_')+ '@' + Date.now()+'.'+fileType[fileType.length - 1]);
       }else if(file.fieldname == 'category_image'){
@@ -84,7 +82,6 @@ router.get('/', function(req, res, next) {
         user_img:req.session.user_img
       }
     }
-    console.log(data.userData);
     res.render('pages/dashboard', data);
   }else{
     res.redirect('/login');
@@ -129,7 +126,6 @@ router.get('/menu', function(req, res, next) {
 
 /* add menu page. */
 router.post('/menu', function(req, res, next) {
-  console.log(req.body);
   if(req.body.active_status == 'on'){
     var status = 1;
   }else{
@@ -144,7 +140,6 @@ router.post('/menu', function(req, res, next) {
       status : status
     }
     addMenu(bodyData, (response)=>{
-      console.log(response.msg);
       if(response.msg == 'success'){
         req.session.msg = "Menu add successfully!";
         res.redirect('/dashboard/menu');
@@ -202,7 +197,6 @@ router.get('/slider', function(req, res, next) {
               user_img:req.session.user_img
             }
           }
-          // console.log(51, response.resdata);
           req.session.msg = null;
           res.render('pages/dashboard/slider', data);
       }
@@ -231,7 +225,6 @@ router.post('/slider', function(req, res, next) {
           status : ((req.body.active_status == 'on') ? 1 : 0)
         }
         addSlider(bodyData, (response)=>{
-          console.log(response.msg);
           if(response.msg == 'success'){
             req.session.msg = "slider add successfully!";
             res.redirect('/dashboard/slider');
@@ -260,7 +253,6 @@ router.get('/main-category', function(req,res,next){
     findAppearance({type:'menu'},(resMenu)=>{
       findCategory((response)=>{
         if(response.msg == 'success'){
-          console.log(response)
           var data = {
             title:'Main-category',
             msg : null,
@@ -303,7 +295,6 @@ router.post('/main-category', function(req,res){
           parent_menu_id : ((req.body.parent_menu_id == undefined) ? null: req.body.parent_menu_id),
           status : ((req.body.active_status == 'on') ? 1 : 0)
         }
-        console.log(bodyData);
          addCategory(bodyData, (response)=>{
           if(response.msg == 'success'){
             req.session.msg = "Category add successfully!";
@@ -352,7 +343,6 @@ router.get('/sub-category', function(req,res,next){
   if(req.session.login){
     findCategory((response)=>{
       if(response.msg == 'success'){
-        console.log(response)
         var data = {
           title:'Sub-category',
           msg : null,
@@ -534,7 +524,6 @@ router.post('/findSubCate',(req,res)=>{
 });
 
 router.get('/manage-product', (req,res)=>{
-  console.log(req.params)
   if(req.session.msg == undefined){
     req.session.msg = null;
   }
