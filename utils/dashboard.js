@@ -55,7 +55,7 @@ var findAppearance =(data,callback)=>{
 
 var appearance_update = (data,callback)=>{
     if(data.type == 'status'){
-        Appearance.update({appearance_id : data.id}, {status :data.value}, (err,result)=>{
+        Appearance.updateOne({appearance_id : data.id}, {status :data.value}, (err,result)=>{
             if(err){
                 console.log(err);
             }else{
@@ -87,7 +87,7 @@ var findCategory =(callback)=>{
 
 var category_update = (data,callback)=>{
     if(data.type == 'status'){
-        Category.update({category_id : data.id}, {status :data.value}, (err,result)=>{
+        Category.updateOne({category_id : data.id}, {status :data.value}, (err,result)=>{
             if(err){
                 console.log(err);
             }else{
@@ -155,6 +155,30 @@ var findPaginateProduct = (data,callback)=>{
     });
 }
 
+var updateProduct = (data,callback)=>{
+    if(data.type == 'status'){
+        Product.updateOne({product_id : data.id}, {status :data.status}, (err,result)=>{
+            if(err){
+                console.log(err);
+            }else{
+                callback({msg:'success',data:result});
+            }
+        })
+    }
+}
+
+var removeProduct = (data,callback)=>{
+    if(data !== ''){
+        Product.deleteOne({product_id:data.id},(err,result)=>{
+            if(err){
+                console.log(err);
+            }else{
+                callback({msg:'success'});
+            }
+        })
+    }
+}
+
 module.exports = {addMenu,
     addSlider,
     addCategory,
@@ -166,6 +190,8 @@ module.exports = {addMenu,
     category_update,
     findSubCategory,
     addNewProduct,
-    findPaginateProduct
+    findPaginateProduct,
+    updateProduct,
+    removeProduct
     
 };

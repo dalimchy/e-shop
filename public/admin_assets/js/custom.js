@@ -122,3 +122,42 @@ function update_category(ele,type){
         }
     }
 }
+
+function changeProductStatus(ele){
+    var id = $(ele).parent('td').attr('data-id');
+    var action = $(ele).attr('data-status');
+
+    if(action == 'active'){
+
+        $.ajax({
+            type: "POST",
+            url: '/dashboard/changeProductStatus',
+            data: {id:id,status:0},
+             success: function(res) {
+                 if(res.msg == 'success'){
+                     $(ele).removeClass('btn-success').addClass('btn-danger').attr('data-status', 'inactive').text('In-Active');
+                }
+            },
+            error: function() {
+                console.log('failed');
+            }
+        });
+    }else{
+
+        $.ajax({
+            type: "POST",
+            url: '/dashboard/changeProductStatus',
+            data: {id:id,status:1},
+            success: function(res) {
+                if(res.msg == 'success'){
+                     $(ele).removeClass('btn-danger').addClass('btn-success').attr('data-status', 'active').text('Active');
+                }
+            },
+            error: function() {
+                console.log('failed');
+            }
+        });
+
+    }
+
+}

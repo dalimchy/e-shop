@@ -66,7 +66,9 @@ var {
     category_delete,
     findSubCategory,
     addNewProduct,
-    findPaginateProduct
+    findPaginateProduct,
+    updateProduct,
+    removeProduct
   } = require('./../utils/dashboard');
 
 /* GET home page. */
@@ -599,5 +601,32 @@ router.get('/manage-product/:page', (req,res)=>{
     res.redirect('/login');
   } 
 });
+router.post('/changeProductStatus', (req,res)=>{
+  if(req.session.login){
+    var reqData = {
+      type : 'status',
+      id : req.body.id,
+      status : req.body.status
+    }
+    updateProduct(reqData, (response)=>{
+      if(response.msg == 'success'){
+        res.send({msg:'success'});
+      }
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
 
+router.post('/removeProduct', (req,res)=>{
+  if(req.session.login){
+    removeProduct(req.body, (response)=>{
+      if(response.msg == 'success'){
+        res.send(response);
+      }
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
 module.exports = router;

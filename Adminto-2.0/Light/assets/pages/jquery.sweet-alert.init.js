@@ -144,6 +144,9 @@
             });
         });
 
+        //reomve Product
+        
+
 
     },
         //init
