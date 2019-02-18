@@ -30,7 +30,6 @@
 
 <!-- Dashboard init -->
 <!-- <script src="/admin_assets/pages/jquery.dashboard.js"></script> -->
-    <% if(title == 'Menu' || title == 'Slider' || title == 'Main-category' || title == 'Sub-category' || title == 'Add-product' || title == 'Manage-product'){%>
        <!-- Datatables-->
        <script src="/admin_assets/plugins/datatables/jquery.dataTables.min.js"></script>
        <script src="/admin_assets/plugins/datatables/dataTables.bootstrap.js"></script>
@@ -69,9 +68,6 @@
         TableManageButtons.init();
 
     </script>
-
-    <% } %>
-<% if(title == 'Slider' || title == 'Main-category' || title == 'Sub-category' || title == 'Add-product' || title == 'Manage-product'){%> 
           <!-- file uploads js -->
         <script src="/admin_assets/plugins/fileuploads/js/dropify.min.js"></script>
         <script type="text/javascript">
@@ -88,7 +84,6 @@
                 }
             });
         </script>
-<% } %>
 <!-- App js -->
 <script src="/admin_assets/js/jquery.core.js"></script>
 <script src="/admin_assets/js/jquery.app.js"></script>
@@ -97,7 +92,6 @@
 
 <script src="/admin_assets/js/custom.js"></script>
 
-<% if(title == 'Sub-category' || title == 'Add-product' || title == 'Manage-product'){%> 
  <script src="/admin_assets/plugins/jquery-ui/jquery-ui.min.js"></script>
 
   <!--form wysiwig js-->
@@ -151,7 +145,6 @@
         });
     });
 </script>
-<% } %>
 
 
 </body>
