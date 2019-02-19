@@ -24,6 +24,15 @@
         align-items: center;
         justify-content: center;
     }
+    .load_product{
+        align-items: center;
+        min-height: 464px;
+        display: flex;
+        justify-content: center;
+    }
+    .load_product .fa-spinner::before{
+        font-size: 50px;
+    }
 </style>
 
             <!-- ============================================================== -->
@@ -70,10 +79,9 @@
                                                             <td><% if(v.product_label !== null){ %><div class="badge badge-primary"><%= v.product_label %></div> <%}%></td>
                                                             <td data-id='<%= v.product_id %>'><% if(v.status == 1){ %><button type="button" class="btn btn-block btn--md btn-success waves-effect waves-light" data-status="active" onclick="changeProductStatus(this)">Active</button><% }else{ %><button type="button" class="btn btn-block btn--md btn-danger waves-effect waves-light" data-status="inactive" onclick="changeProductStatus(this)">In-Active</button><% } %></td>
                                                             <td>
-                                                                <a class="btn btn--md btn-primary waves-effect waves-light" href="#viewProduct" data-animation="fall" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a"> <i class="fa fa-eye"></i> </a>
+                                                                <button class="btn btn--md btn-primary waves-effect waves-light" href="#viewProduct" data-animation="fall" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a"> <i class="fa fa-eye"></i> </button>
                                                                 <button class="btn btn--md btn-info waves-effect waves-light"> <i class="fa fa-edit (alias)"></i> </button>
                                                                 <button class="btn btn--md btn-danger waves-effect waves-light" data-id="<%= v.product_id %>" onclick="removeThisProduct(this)"> <i class="fa fa-trash-o"></i> </button>
-
                                                             </td>
                                                         </tr>
                                                     <% }); %>
@@ -99,7 +107,7 @@
 
             </div>
             <!-- Modal -->
-            <div id="viewProduct" class="modal-demo">
+            <div id="viewProduct" class="modal-demo" style="width:690px !important">
                 <button type="button" class="close" onclick="Custombox.close();">
                     <span>&times;</span><span class="sr-only">Close</span>
 
@@ -111,15 +119,31 @@
  
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="bg-picture card-box">
+                                <div class="card-box load_product" style="display:flex">
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                </div>
+                                <div class="bg-picture card-box" style="display:none">
                                     <div class="profile-info-name">
-                                        <img src="/admin_assets/images/profile.jpg"
-                                             class="img-thumbnail" alt="profile-image">
+                                        <div style="float: left;width: 200px;height: auto;margin-right: 30px;">
+                                            <img src="/admin_assets/images/profile.jpg" class="img-thumbnail" alt="profile-image">
+                                            <img src="/admin_assets/images/profile.jpg" class="" style="width:98px;margin: 2px 2px 0 0;float: left;padding: 4px;border: 1px solid #EBEFF2;" alt="profile-image">
+                                            <img src="/admin_assets/images/profile.jpg" class="" style="width:98px;margin: 2px 2px 0 0;float: left;padding: 4px;border: 1px solid #EBEFF2;" alt="profile-image">
+                                            <img src="/admin_assets/images/profile.jpg" class="" style="width:98px;margin: 2px 2px 0 0;float: left;padding: 4px;border: 1px solid #EBEFF2;" alt="profile-image">
+                                            <img src="/admin_assets/images/profile.jpg" class="" style="width:98px;margin: 2px 2px 0 0;float: left;padding: 4px;border: 1px solid #EBEFF2;" alt="profile-image">
+                                        </div>
 
                                         <div class="profile-info-detail">
                                             <h3 class="m-t-0 m-b-0">Alexandra Clarkson</h3>
                                             <p class="text-muted m-b-20"><i>Web Designer</i></p>
-                                            <p>Hi I'm Alexandra Clarkson,has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of </p>
+                                            <p id="Pro_name" class="text-left"><span style="width:105px;display:flow-root;float:left">P. Name : </span> <span>Hi I'm Alexandra Clarkson</span></p>
+                                            <p id="Pro_model" class="text-left"><span style="width:105px;display:flow-root;float:left">P. Model : </span> <span>Hi I'm Alexandra Clarkson</span></p>
+                                            <p id="Pro_qty" class="text-left"><span style="width:105px;display:flow-root;float:left">P. Quantity : </span> <span>Hi I'm Alexandra Clarkson</span></p>
+                                            <p id="Pro_price" class="text-left"><span style="width:105px;display:flow-root;float:left">P. Price : </span> <span>Hi I'm Alexandra Clarkson</span></p>
+                                            <p id="Pro_d_price" class="text-left"><span style="width:105px;display:flow-root;float:left">P.D. Price : </span> <span>Hi I'm Alexandra Clarkson</span></p>
+                                            <p id="Pro_label" class="text-left"><span style="width:105px;display:flow-root;float:left">P. label : </span> <span>Hi I'm Alexandra Clarkson</span></p>
+                                            <p id="Pro_s_desc" class="text-left"><span style="width:105px;display:flow-root;float:left">S. Description : </span> <span>Hi I'm Alexandra Clarkson</span></p>
+                                            <p id="Pro_l_name" class="text-left"><span style="width:105px;display:flow-root;float:left">L. Description : </span> <span>Hi I'm Alexandra Clarkson</span></p>
+                                            <p id="Pro_status" class="text-left"><span style="width:105px;display:flow-root;float:left">P. Status : </span> <span>Hi I'm Alexandra Clarkson</span></p>
 
                                             <div class="button-list m-t-20">
                                                 <button type="button" class="btn btn-facebook btn-sm waves-effect waves-light">
@@ -144,6 +168,7 @@
                                         <div class="clearfix"></div>
                                     </div>
                                 </div>
+
                                 <!--/ meta -->
 
 
