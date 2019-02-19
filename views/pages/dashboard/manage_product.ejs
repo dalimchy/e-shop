@@ -79,7 +79,7 @@
                                                             <td><% if(v.product_label !== null){ %><div class="badge badge-primary"><%= v.product_label %></div> <%}%></td>
                                                             <td data-id='<%= v.product_id %>'><% if(v.status == 1){ %><button type="button" class="btn btn-block btn--md btn-success waves-effect waves-light" data-status="active" onclick="changeProductStatus(this)">Active</button><% }else{ %><button type="button" class="btn btn-block btn--md btn-danger waves-effect waves-light" data-status="inactive" onclick="changeProductStatus(this)">In-Active</button><% } %></td>
                                                             <td>
-                                                                <button class="btn btn--md btn-primary waves-effect waves-light" href="#viewProduct" data-animation="fall" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a"> <i class="fa fa-eye"></i> </button>
+                                                                <button class="btn btn--md btn-primary waves-effect waves-light" href="#viewProduct" onclick="viewProduct(this)" data-id="<%= v.product_id %>" data-animation="fall" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a"> <i class="fa fa-eye"></i> </button>
                                                                 <button class="btn btn--md btn-info waves-effect waves-light"> <i class="fa fa-edit (alias)"></i> </button>
                                                                 <button class="btn btn--md btn-danger waves-effect waves-light" data-id="<%= v.product_id %>" onclick="removeThisProduct(this)"> <i class="fa fa-trash-o"></i> </button>
                                                             </td>
@@ -119,49 +119,35 @@
  
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="card-box load_product" style="display:flex">
+                                <div id="ProLoader" class="card-box load_product" style="display:flex;">
                                     <i class="fa fa-spinner fa-spin"></i>
                                 </div>
-                                <div class="bg-picture card-box" style="display:none">
+                                <div id="ProViewContainer" class="bg-picture card-box" style="display:none">
                                     <div class="profile-info-name">
                                         <div style="float: left;width: 200px;height: auto;margin-right: 30px;">
-                                            <img src="/admin_assets/images/profile.jpg" class="img-thumbnail" alt="profile-image">
-                                            <img src="/admin_assets/images/profile.jpg" class="" style="width:98px;margin: 2px 2px 0 0;float: left;padding: 4px;border: 1px solid #EBEFF2;" alt="profile-image">
-                                            <img src="/admin_assets/images/profile.jpg" class="" style="width:98px;margin: 2px 2px 0 0;float: left;padding: 4px;border: 1px solid #EBEFF2;" alt="profile-image">
-                                            <img src="/admin_assets/images/profile.jpg" class="" style="width:98px;margin: 2px 2px 0 0;float: left;padding: 4px;border: 1px solid #EBEFF2;" alt="profile-image">
-                                            <img src="/admin_assets/images/profile.jpg" class="" style="width:98px;margin: 2px 2px 0 0;float: left;padding: 4px;border: 1px solid #EBEFF2;" alt="profile-image">
+                                            <img id="featureImage" src="/admin_assets/images/profile.jpg" class="img-thumbnail" alt="profile-image">
                                         </div>
 
                                         <div class="profile-info-detail">
-                                            <h3 class="m-t-0 m-b-0">Alexandra Clarkson</h3>
-                                            <p class="text-muted m-b-20"><i>Web Designer</i></p>
-                                            <p id="Pro_name" class="text-left"><span style="width:105px;display:flow-root;float:left">P. Name : </span> <span>Hi I'm Alexandra Clarkson</span></p>
-                                            <p id="Pro_model" class="text-left"><span style="width:105px;display:flow-root;float:left">P. Model : </span> <span>Hi I'm Alexandra Clarkson</span></p>
-                                            <p id="Pro_qty" class="text-left"><span style="width:105px;display:flow-root;float:left">P. Quantity : </span> <span>Hi I'm Alexandra Clarkson</span></p>
-                                            <p id="Pro_price" class="text-left"><span style="width:105px;display:flow-root;float:left">P. Price : </span> <span>Hi I'm Alexandra Clarkson</span></p>
-                                            <p id="Pro_d_price" class="text-left"><span style="width:105px;display:flow-root;float:left">P.D. Price : </span> <span>Hi I'm Alexandra Clarkson</span></p>
-                                            <p id="Pro_label" class="text-left"><span style="width:105px;display:flow-root;float:left">P. label : </span> <span>Hi I'm Alexandra Clarkson</span></p>
-                                            <p id="Pro_s_desc" class="text-left"><span style="width:105px;display:flow-root;float:left">S. Description : </span> <span>Hi I'm Alexandra Clarkson</span></p>
-                                            <p id="Pro_l_name" class="text-left"><span style="width:105px;display:flow-root;float:left">L. Description : </span> <span>Hi I'm Alexandra Clarkson</span></p>
-                                            <p id="Pro_status" class="text-left"><span style="width:105px;display:flow-root;float:left">P. Status : </span> <span>Hi I'm Alexandra Clarkson</span></p>
+                                            <h3 class="m-t-0 m-b-0" id="pro_name"></h3>
+                                            <div class="text-left" style="margin-top: 20px">
+                                                <p class="text-muted font-13"><strong>Product Id:</strong> <span class="m-l-15" id="product_v_id"></span></p>
 
-                                            <div class="button-list m-t-20">
-                                                <button type="button" class="btn btn-facebook btn-sm waves-effect waves-light">
-                                                   <i class="fa fa-facebook"></i>
-                                                </button>
+                                                <p class="text-muted font-13"><strong>Product Model:</strong> <span class="m-l-15" id="pro_model"></span></p>
 
-                                                <button type="button" class="btn btn-sm btn-twitter waves-effect waves-light">
-                                                   <i class="fa fa-twitter"></i>
-                                                </button>
+                                                <p class="text-muted font-13"><strong>Product Quantity :</strong><span class="m-l-15" id="pro_qty"></span></p>
 
-                                                <button type="button" class="btn btn-sm btn-linkedin waves-effect waves-light">
-                                                   <i class="fa fa-linkedin"></i>
-                                                </button>
+                                                <p class="text-muted font-13"><strong>Product orginal price :</strong> <span class="m-l-15" id="pro_org_price"></span></p>
 
-                                                <button type="button" class="btn btn-sm btn-dribbble waves-effect waves-light">
-                                                   <i class="fa fa-dribbble"></i>
-                                                </button>
+                                                <p class="text-muted font-13"><strong>Product discount price :</strong> <span class="m-l-15" id="pro_dis_price"></span></p>
 
+                                                <p class="text-muted font-13"><strong>Product label :</strong> <span class="m-l-15" id="pro_label"></span></p>
+
+                                                <p class="text-muted font-13"><strong>Short Description :</strong> <span class="m-l-15" id="pro_short_desc"></span></p>
+
+                                                <p class="text-muted font-13"><strong>Long Description :</strong> <span class="m-l-15" id="pro_long_desc"></span></p>
+
+                                                <p class="text-muted font-13"><strong>Status :</strong> <span class="m-l-15" id="pro_status"></span></p>
                                             </div>
                                         </div>
 
@@ -250,6 +236,45 @@
 
                   }
                   
+                });
+            }
+
+            function viewProduct(ele){
+                var value = $(ele).attr('data-id');
+                $('#ProLoader').css('display','flex');
+                $('#ProViewContainer').hide();
+                $('#ProViewContainer .pro-img-more').remove();
+                $.ajax({
+                    type : 'GET',
+                    url : '/dashboard/view_pro/'+value+'',
+                    success:function(res){
+                        if(res.msg == 'success'){
+                            console.log(res.resData);
+                            $('#featureImage').attr('src', '/admin_assets/images/product_feature_img/'+res.resData.product_feature_img+'');
+                            if(res.resData.product_image.length !== 0){
+                                $.each(res.resData.product_image, function(k,v){
+                                    $('#featureImage').after('<img src="/admin_assets/images/product_images/'+v+'" class="pro-img-more" style="width:98px;margin: 2px 2px 0 0;float: left;padding: 4px;border: 1px solid #EBEFF2;" alt="profile-image">')
+                                });
+                            }
+                            $('#product_v_id').text(res.resData.product_id);
+                            $('#pro_name').text(res.resData.product_name);
+                            $('#pro_qty').text(res.resData.product_qty);
+                            $('#pro_org_price').text(res.resData.product_price);
+                            $('#pro_dis_price').text(res.resData.product_short_desc);
+                            $('#pro_model').text(res.resData.product_model);
+                            $('#pro_label').text(res.resData.product_label);
+                            $('#pro_short_desc').text(res.resData.product_short_desc);
+                            $('#pro_long_desc').text(res.resData.product_long_desc);
+                            $('#pro_status').text((res.resData.status == 1)? 'Active':'In-Active');
+
+                            $('#ProLoader').hide();
+                            $('#ProViewContainer').show();
+
+                        }
+                    },
+                    error:function(res){
+                        console.log(res);
+                    }
                 });
             }
         </script>

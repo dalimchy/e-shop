@@ -210,6 +210,18 @@ var removeTagOne = (data,callback)=>{
     }
 }
 
+var findProductOne = (data,callback)=>{
+    if(data !== ''){
+        Product.findOne({product_id:data},(err,result)=>{
+            if(err){
+                console.log(err);
+            }else{
+                callback({msg:'success',resData:result});
+            }
+        })
+    }
+}
+
 module.exports = {addMenu,
     addSlider,
     addCategory,
@@ -226,6 +238,7 @@ module.exports = {addMenu,
     removeProduct,
     addTag,
     allTag,
-    removeTagOne
+    removeTagOne,
+    findProductOne
     
 };

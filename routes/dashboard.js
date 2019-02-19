@@ -69,7 +69,8 @@ var {
     removeProduct,
     addTag,
     allTag,
-    removeTagOne
+    removeTagOne,
+    findProductOne
   } = require('./../utils/dashboard');
 
 /* GET home page. */
@@ -675,6 +676,18 @@ router.post('/tags', (req,res)=>{
 router.post('/removeTag', (req,res)=>{
   if(req.session.login){
     removeTagOne(req.body, (response)=>{
+      if(response.msg == 'success'){
+        res.send(response);
+      }
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
+
+router.get('/view_pro/:product_id', function(req,res){
+  if(req.session.login){
+    findProductOne(req.params.product_id, (response)=>{
       if(response.msg == 'success'){
         res.send(response);
       }
