@@ -66,7 +66,10 @@ var {
     addNewProduct,
     findPaginateProduct,
     updateProduct,
-    removeProduct
+    removeProduct,
+    addTag,
+    allTag,
+    removeTagOne
   } = require('./../utils/dashboard');
 
 /* GET home page. */
@@ -624,24 +627,62 @@ router.get('/tags', (req,res)=>{
     req.session.msg = null;
   }
   if(req.session.login){
-    var data = {
-      title:'Tags',
-      msg : null,
-      ses_msg : req.session.msg,
-      _ : _,
-      _Obj : _Obj,
-      userData : {
-        user_name : req.session.user_name,
-        user_id:req.session.user_id,
-        user_email:req.session.user_email,
-        user_img:req.session.user_img
+    allTag((response)=>{
+      if(response.msg == 'success'){
+        var data = {
+          title:'Tags',
+          msg : null,
+          ses_msg : req.session.msg,
+          tags : response.resdata,
+          _ : _,
+          _Obj : _Obj,
+          userData : {
+            user_name : req.session.user_name,
+            user_id:req.session.user_id,
+            user_email:req.session.user_email,
+            user_img:req.session.user_img
+          }
+        }
+        req.session.msg = null;
+        res.render('pages/dashboard/tags', data);
       }
-    }
-    req.session.msg = null;
-    res.render('pages/dashboard/tags', data);
+    });
 
   }else{
     res.redirect('/login');
   }
 });
+router.post('/tags', (req,res)=>{
+  if(req.session.login){
+    var bodyData = {
+        tag_id : uuidv4(),
+        tag_name : ((req.body.tag_name == '') ? 'demo': req.body.tag_name),
+      }
+       addTag(bodyData, (response)=>{
+        if(response.msg == 'success'){
+          req.session.msg = "Tag add successfully!";
+          res.redirect('/dashboard/tags');
+        }else{
+          req.session.msg = "Error !!";
+          res.redirect('/dashboard/main-category');
+        }
+       });
+  }else{
+    res.redirect('/login');
+  }
+});
+
+router.post('/removeTag', (req,res)=>{
+  if(req.session.login){
+    removeTagOne(req.body, (response)=>{
+      if(response.msg == 'success'){
+        res.send(response);
+      }
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
+
+
 module.exports = router;

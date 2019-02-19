@@ -6,6 +6,7 @@ var mongoosePaginate = require('mongoose-paginate');
 const Appearance = require('../models/Appearance');
 const Category = require('../models/Category');
 const Product = require('../models/Product');
+const Tag = require('../models/Tag');
 
 // schema.plugin(mongoosePaginate);
 
@@ -179,6 +180,36 @@ var removeProduct = (data,callback)=>{
     }
 }
 
+var addTag = (data,callback)=>{
+    if(data.tag_id !== ''){
+        var newTag = new Tag(data);
+        newTag.save().then(res =>{
+            callback({msg:'success',data:data});
+        })
+        .catch(err => console.log(err));
+    }
+}
+var allTag = (callback)=>{
+    Tag.find().sort({created_at: 'desc'}).exec(function (err, docs) {
+        if(err){
+            console.log(err);
+        }else{
+            callback({msg:'success',resdata:docs});
+        }
+    });
+}
+var removeTagOne = (data,callback)=>{
+    if(data !== ''){
+        Tag.deleteOne({tag_id:data.id},(err,result)=>{
+            if(err){
+                console.log(err);
+            }else{
+                callback({msg:'success'});
+            }
+        })
+    }
+}
+
 module.exports = {addMenu,
     addSlider,
     addCategory,
@@ -192,6 +223,9 @@ module.exports = {addMenu,
     addNewProduct,
     findPaginateProduct,
     updateProduct,
-    removeProduct
+    removeProduct,
+    addTag,
+    allTag,
+    removeTagOne
     
 };
