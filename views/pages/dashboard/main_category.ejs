@@ -23,25 +23,13 @@
                                         <form action="/dashboard/main-category" class="form-horizontal" role="form"  method="POST" enctype="multipart/form-data">
                                             <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label class="col-md-4 control-label">Select menu</label>
+                                                        <label class="col-md-4 control-label">Select Category Menu</label>
                                                         <div class="col-md-8">
                                                             <select class="form-control select2" name="parent_menu_id" >
                                                                 <option value="" selected disabled>Select</option>>
-                                                                <optgroup label="Primary menu">
-                                                                    <% _.each(menulist, function(v,k){ if(v.assign_menu == 'primay_menu'){ %>
+                                                                    <% _.each(menulist, function(v,k){ if(v.assign_menu == 'category_menu'){ %>
                                                                         <option value="<%= v.appearance_id%>"><%= v.menu_title%></option>
                                                                     <% } }); %>
-                                                                </optgroup>
-                                                                <optgroup label="Secondary menu">
-                                                                    <% _.each(menulist, function(v,k){ if(v.assign_menu == 'secondary_menu'){ %>
-                                                                        <option value="<%= v.appearance_id%>"><%= v.menu_title%></option>
-                                                                    <% } }); %>
-                                                                </optgroup>
-                                                                <optgroup label="Footer menu">
-                                                                    <% _.each(menulist, function(v,k){ if(v.assign_menu == 'footer_menu'){ %>
-                                                                        <option value="<%= v.appearance_id%>"><%= v.menu_title%></option>
-                                                                    <% } }); %>
-                                                                </optgroup>
                                                             </select>
                                                         </div>
                                                     </div>

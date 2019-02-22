@@ -222,7 +222,8 @@ var findProductOne = (data,callback)=>{
     }
 }
 
-module.exports = {addMenu,
+module.exports = {
+    addMenu,
     addSlider,
     addCategory,
     findAppearance,
@@ -240,5 +241,4 @@ module.exports = {addMenu,
     allTag,
     removeTagOne,
     findProductOne
-    
 };
