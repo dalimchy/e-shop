@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
+var base64Img = require('base64-img');
 var _ = require('lodash');
 var fs = require('file-system');
 var multer = require('multer');
@@ -224,9 +225,12 @@ router.post('/slider', function(req, res, next) {
           appearance_type : 'slider',
           slider_heading : ((req.body.slider_heading == '') ? null: req.body.slider_heading),
           slider_desc : ((req.body.slider_desc == '') ? null: req.body.slider_desc),
-          slider_img : req.file.filename,
+          slider_img : null,
           assign_slider : req.body.assign_slider,
           status : ((req.body.active_status == 'on') ? 1 : 0)
+        }
+        if(req.file !== undefined){
+          bodyData.slider_img = base64Img.base64Sync('./public/admin_assets/images/slider/'+req.file.filename);
         }
         addSlider(bodyData, (response)=>{
           if(response.msg == 'success'){
@@ -489,19 +493,34 @@ router.post('/add-product',(req,res)=>{
                   product_price : ((req.body.product_orgianl_price == '') ? 0: req.body.product_orgianl_price),
                   product_discount_price : ((req.body.product_discount_price == '') ? null: req.body.product_discount_price),
                   product_feature_img : ((req.file == undefined) ? 'demo.png': req.file.filename),
+                  product_feature_img_enc : null,
                   product_image : ((proImgeArray[0] !== '') ? proImgeArray:[]),
                   status : ((req.body.active_status == 'on') ? 1 : 0)
                 }
-
-        addNewProduct(data,(docs)=>{
-            if(docs.msg == 'success'){
-              req.session.msg = "Product add successfully!";
-              res.redirect('/dashboard/add-product');
+            if(req.file == undefined){
+              addNewProduct(data,(docs)=>{
+                if(docs.msg == 'success'){
+                  req.session.msg = "Product add successfully!";
+                  res.redirect('/dashboard/add-product');
+                }else{
+                  req.session.msg = "Error !!";
+                  res.redirect('/dashboard/add-product');
+                }
+              });
             }else{
-              req.session.msg = "Error !!";
-              res.redirect('/dashboard/add-product');
+              data.product_feature_img_enc = base64Img.base64Sync('./public/admin_assets/images/product_feature_img/'+req.file.filename);
+              addNewProduct(data,(docs)=>{
+                if(docs.msg == 'success'){
+                  req.session.msg = "Product add successfully!";
+                  res.redirect('/dashboard/add-product');
+                }else{
+                  req.session.msg = "Error !!";
+                  res.redirect('/dashboard/add-product');
+                }
+              });
+
+
             }
-        });
       }
     });
   }else{
@@ -570,26 +589,30 @@ router.get('/manage-product/:page', (req,res)=>{
       pageNumber: req.params.page,
       dataLimit : 10,
     }
-    findPaginateProduct(reqData,(response)=>{
-      if(response.msg == 'success'){
-        var data = {
-          title:'Manage-product',
-          msg : null,
-          ses_msg : req.session.msg,
-          _ : _,
-          product : response.data,
-          _Obj : _Obj,
-          userData : {
-            user_name : req.session.user_name,
-            user_id:req.session.user_id,
-            user_email:req.session.user_email,
-            user_img:req.session.user_img
+    if(reqData.pageNumber == 0){
+      res.redirect('/dashboard/manage-product');
+    }else{
+      findPaginateProduct(reqData,(response)=>{
+        if(response.msg == 'success'){
+          var data = {
+            title:'Manage-product',
+            msg : null,
+            ses_msg : req.session.msg,
+            _ : _,
+            product : response.data,
+            _Obj : _Obj,
+            userData : {
+              user_name : req.session.user_name,
+              user_id:req.session.user_id,
+              user_email:req.session.user_email,
+              user_img:req.session.user_img
+            }
           }
+          req.session.msg = null;
+          res.render('pages/dashboard/manage_product', data);
         }
-        req.session.msg = null;
-        res.render('pages/dashboard/manage_product', data);
-      }
-    });
+      });
+    }
   }else{
     res.redirect('/login');
   } 

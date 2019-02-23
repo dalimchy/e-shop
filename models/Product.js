@@ -33,6 +33,10 @@ const productSchema = new Schema({
         type:String,
         required:true
     },
+    product_feature_img_enc:{
+        type:String,
+        default:null
+    },
     product_image:{
         type:Array,
         default:[]

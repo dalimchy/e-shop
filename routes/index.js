@@ -27,6 +27,7 @@ router.get('/', function(req, res, next) {
         appearance : response.appearance,
         category : response.category,
         tag : response.tag,
+        products : response.products,
         _Obj : _Obj,
         ses_msg : req.session.msg,
         _ : _

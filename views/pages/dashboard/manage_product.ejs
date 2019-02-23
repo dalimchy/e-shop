@@ -75,7 +75,7 @@
                                                             <td><%= v.product_qty %></td>
                                                             <td><%= v.product_price %></td>
                                                             <td><%= v.product_discount_price %></td>
-                                                            <td><div class="text-center customImgDiv"><img src="/admin_assets/images/product_feature_img/<%= v.product_feature_img%>" alt="Feature Image" style="max-width:100%; max-height: 100%"></div></td>
+                                                            <td><div class="text-center customImgDiv"><img src="<%= v.product_feature_img_enc%>" alt="Feature Image" style="max-width:100%; max-height: 100%"></div></td>
                                                             <td><% if(v.product_label !== null){ %><div class="badge badge-primary"><%= v.product_label %></div> <%}%></td>
                                                             <td data-id='<%= v.product_id %>'><% if(v.status == 1){ %><button type="button" class="btn btn-block btn--md btn-success waves-effect waves-light" data-status="active" onclick="changeProductStatus(this)">Active</button><% }else{ %><button type="button" class="btn btn-block btn--md btn-danger waves-effect waves-light" data-status="inactive" onclick="changeProductStatus(this)">In-Active</button><% } %></td>
                                                             <td>

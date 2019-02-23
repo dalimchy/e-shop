@@ -122,7 +122,7 @@
                                         <tbody>
                                             <% _.each(allSlider, function(v,k){ %> 
                                                 <tr id="_slider<%= v.appearance_id %>">
-                                                    <td class="text-center"><img style="max-width: 100px; max-height: 100px; border-radius: 4px" src="/admin_assets/images/slider/<%= v.slider_img %>"></td>
+                                                    <td class="text-center"><img style="max-width: 100px; max-height: 100px; border-radius: 4px" src="<%= v.slider_img %>"></td>
                                                     <td><%= v.assign_slider %></td>
                                                     <td><%= v.slider_heading %></td>
                                                     <td><%= v.slider_desc %></td>
