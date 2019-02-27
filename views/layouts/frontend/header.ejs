@@ -393,7 +393,7 @@
                             <h3><%= vcm.category_name %></h3>
                             <ul class="nav">
                               <% _.each(category,function(vcs,kcs){ if(vcs.parent_category_id == vcm.category_id && vcs.category_type == 'sub_category' && vcs.status == 1){ %>
-                              <li><a href="#"><%= vcm.category_name %></a></li>
+                              <li><a href="#"><%= vcs.category_name %></a></li>
                               <% } }); %>
                             </ul>
                           </div>
