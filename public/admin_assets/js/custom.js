@@ -161,3 +161,33 @@ function changeProductStatus(ele){
     }
 
 }
+
+
+function menucategoryOnchange(ele){
+    var value = $(ele).val();
+    if(value !== ''){
+    $.ajax({
+            type: 'POST',
+            url: '/dashboard/findMainCate',
+            data :{data:value},
+            error: function(err){
+                console.log(err);
+            },
+            success: function(res){
+                if(res.msg == 'success'){
+                    $('#select_main_category').html('');
+                    $('#select_main_category').val('');
+                    $('#select_sub_category').html('');
+                    $('#select_sub_category').val('');
+                    $.each(res.data, (k,v)=>{
+                        $('#select_main_category').append('<option value="'+v.cateId+'">'+v.name+'</option>');
+                    });
+                }else{
+                    $('#select_main_category').html('');
+                }
+            }        
+        });
+    }else{
+        console.log('null');
+    }
+}

@@ -125,12 +125,12 @@
             <div class="slider-items-products">
               <div id="jtv-best-sale-slider" class="product-flexslider">
                 <div class="slider-items">
-                  <% var i = 0; _.each(products, function(v,k){ i++; var onepercent = v.product_price * 1 / 100 ; var percentage = Math.ceil( v.product_discount_price / onepercent );  if(v.product_discount_price !== null && i < 25 ){%>
+                  <% var i = 0; _.each(products, function(v,k){ i++; var onepercent = v.product_price * 1 / 100 ; var percentage = Math.ceil( v.product_discount_price / onepercent - 100 );  if(v.product_discount_price !== null && i < 25 ){%>
                     <div class="product-item">
                       <div class="item-inner">
                         <div class="product-thumbnail">
                           <div class="icon-new-label new-left"><%= v.product_label %></div>
-                          <div class="icon-sale-label sale-right">-<%= percentage %>%</div>
+                          <div class="icon-sale-label sale-right"><%= percentage %>%</div>
                           <div class="pr-img-area"> <a title="Product title here" href="single_product.html">
                             <figure> <img class="first-img" src="<%= v.product_feature_img_enc %>" alt="HTML template" style="height: 190px;"> <img class="hover-img" src="<%= v.product_feature_img_enc %>" alt="HTML template" style="height: 190px;" ></figure>
                             </a> </div>

@@ -351,25 +351,28 @@ router.get('/sub-category', function(req,res,next){
     req.session.msg = null;
   }
   if(req.session.login){
-    findCategory((response)=>{
-      if(response.msg == 'success'){
-        var data = {
-          title:'Sub-category',
-          msg : null,
-          category : response.resdata,
-          ses_msg : req.session.msg,
-          _ : _,
-          _Obj : _Obj,
-          userData : {
-            user_name : req.session.user_name,
-            user_id:req.session.user_id,
-            user_email:req.session.user_email,
-            user_img:req.session.user_img
+    findMenuCate((response2)=>{
+      findCategory((response)=>{
+        if(response.msg == 'success'){
+          var data = {
+            title:'Sub-category',
+            msg : null,
+            category : response.resdata,
+            menu_category : response2.resdata,
+            ses_msg : req.session.msg,
+            _ : _,
+            _Obj : _Obj,
+            userData : {
+              user_name : req.session.user_name,
+              user_id:req.session.user_id,
+              user_email:req.session.user_email,
+              user_img:req.session.user_img
+            }
           }
+          req.session.msg = null;
+          res.render('pages/dashboard/sub_category', data);
         }
-        req.session.msg = null;
-        res.render('pages/dashboard/sub_category', data);
-      }
+      });
     });
   }else{
     res.redirect('/login');
