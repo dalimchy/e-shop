@@ -71,7 +71,9 @@ var {
     addTag,
     allTag,
     removeTagOne,
-    findProductOne
+    findProductOne,
+    findMenuCate,
+    findMainCategory
   } = require('./../utils/dashboard');
 
 /* GET home page. */
@@ -414,12 +416,12 @@ router.get('/add-product', (req,res)=>{
     req.session.msg = null;
   }
   if(req.session.login){
-    findCategory((response)=>{
+    findMenuCate((response)=>{
     var data = {
           title:'Add-product',
           msg : null,
           ses_msg : req.session.msg,
-          category : response.resdata,
+          menu_category : response.resdata,
           _ : _,
           _Obj : _Obj,
           userData : {
@@ -485,6 +487,7 @@ router.post('/add-product',(req,res)=>{
                   product_name : req.body.product_name,
                   product_model : ((req.body.product_model == '') ? null: req.body.product_model),
                   product_qty : ((req.body.product_qty == '') ? 0: req.body.product_qty),
+                  product_menu_category_id:req.body.menu_category_id,
                   product_main_category_id:req.body.main_category_id,
                   product_sub_category_id : ((req.body.sub_category_id == '') ? null: req.body.sub_category_id),
                   product_label: ((req.body.product_label == '') ? null: req.body.product_label),
@@ -531,6 +534,23 @@ router.post('/add-product',(req,res)=>{
 router.post('/findSubCate',(req,res)=>{
   if(req.session.login){
     findSubCategory(req.body.data,(response)=>{
+      var cdData = [];
+      _.each(response, (v,k)=>{
+          var data = {
+            name:v.category_name,
+            cateId:v.category_id
+          }
+          cdData.push(data);
+      });
+      res.send({msg:"success",data:cdData});
+    });
+  }else{
+    res.redirect('/login');
+  }
+});
+router.post('/findMainCate',(req,res)=>{
+  if(req.session.login){
+    findMainCategory(req.body.data,(response)=>{
       var cdData = [];
       _.each(response, (v,k)=>{
           var data = {

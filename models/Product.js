@@ -41,6 +41,10 @@ const productSchema = new Schema({
         type:Array,
         default:[]
     },
+    product_menu_category_id:{
+        type:String,
+        required:true
+    },
     product_main_category_id:{
         type:String,
         required:true

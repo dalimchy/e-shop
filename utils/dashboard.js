@@ -137,6 +137,15 @@ var findSubCategory = (data,callback)=>{
         }
     });
 }
+var findMainCategory = (data,callback)=>{
+    Category.find({ parent_menu_id: data }, (err,docs)=>{
+        if(err){
+            console.log(err);
+        }else{
+            callback(docs);
+        }
+    });
+}
 
 var addNewProduct = (data,callback)=>{
     var newProduct = new Product(data);
@@ -222,6 +231,17 @@ var findProductOne = (data,callback)=>{
     }
 }
 
+var findMenuCate = (callback)=>{
+    Appearance.find({appearance_type:'menu'}).sort({created_at: 'desc'}).exec(function (err, docs) {
+        if(err){
+            console.log(err);
+        }else{
+            console.log(docs);
+            callback({msg:'success',resdata:docs});
+        }
+    });
+}
+
 module.exports = {
     addMenu,
     addSlider,
@@ -240,5 +260,7 @@ module.exports = {
     addTag,
     allTag,
     removeTagOne,
-    findProductOne
+    findProductOne,
+    findMenuCate,
+    findMainCategory
 };

@@ -49,20 +49,28 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-md-4 control-label">Select menu category *</label>
+                                                    <div class="col-md-8">
+                                                        <select class="form-control select2" name="menu_category_id" id='select_menu_category' required onchange="menucategoryOnchange(this)">
+                                                            <option value="" >Select</option>>
+                                                            <% _.each(menu_category, function(v,k){ if(v.assign_menu == 'category_menu' && v.status == 1){ %> 
+                                                                <option value="<%= v.appearance_id%>"><%= v.menu_title%></option>
+                                                            <% } });%>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-md-4 control-label">Select main category *</label>
                                                     <div class="col-md-8">
                                                         <select class="form-control select2" name="main_category_id" id='select_main_category' required onchange="categoryOnchange(this)">
-                                                            <option value="" >Select</option>>
-                                                            <% _.each(category, function(v,k){ if(v.category_type == 'main_category'){ %> 
-                                                                <option value="<%= v.category_id%>"><%= v.category_name%></option>
-                                                            <% } });%>
+                                                            
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label">Select sub category</label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control" id="select_sub_category" name="sub_category_id" >
+                                                        <select class="form-control select2" id="select_sub_category" name="sub_category_id" >
                                                             
                                                         </select>
                                                     </div>
@@ -264,7 +272,34 @@
 
             return html;
     }
-
+    function menucategoryOnchange(ele){
+        var value = $(ele).val();
+        if(value !== ''){
+        $.ajax({
+                type: 'POST',
+                url: '/dashboard/findMainCate',
+                data :{data:value},
+                error: function(err){
+                    console.log(err);
+                },
+                success: function(res){
+                    if(res.msg == 'success'){
+                        $('#select_main_category').html('');
+                        $('#select_main_category').val('');
+                        $('#select_sub_category').html('');
+                        $('#select_sub_category').val('');
+                        $.each(res.data, (k,v)=>{
+                            $('#select_main_category').append('<option value="'+v.cateId+'">'+v.name+'</option>');
+                        });
+                    }else{
+                        $('#select_main_category').html('');
+                    }
+                }        
+            });
+        }else{
+            console.log('null');
+        }
+    }
     function categoryOnchange(ele){
         var value = $(ele).val();
         if(value !== ''){
