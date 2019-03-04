@@ -3515,7 +3515,15 @@ nav a:hover {
 	text-transform: uppercase;
 	margin-right: 1px;
 	background: none !important;
-	margin-right: 30px;
+	margin-right: 0px;
+	padding: 0px 12px;
+    box-sizing: border-box;
+}
+.mtmegamenu>ul>li.active {
+	background: #fff !important;
+}
+.mtmegamenu>ul>li.active .title-text{
+	color: #cb2d22 !important;
 }
 .mtmegamenu>ul>li:last-child {
 	margin-right: 0px;
@@ -8174,4 +8182,29 @@ a.jtv-m-logo-img {
 }
 .manufacturers-box {
 	margin-top: 15px;
+}
+
+#jtv-best-sale-slider .first-img,
+#jtv-best-sale-slider .hover-img{
+	height: 190px;
+}
+
+#customloader{
+	position: fixed;
+    z-index: 99999999999;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#customloader .loaderimg{
+	background-image:url('loader.svg');
+	width: 100px;
+	height: 100px;
+
+}
+*{
+	overflow: hidden;
 }

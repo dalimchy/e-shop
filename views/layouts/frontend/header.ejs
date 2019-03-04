@@ -15,13 +15,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- Favicons Icon -->
-<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<link rel="shortcut icon" type="image/x-icon" href="/frontend_assets/favicon.ico">
 
 <!-- CSS Style -->
 <link rel="stylesheet" href="/frontend_assets/style.css">
 </head>
-
 <body class="cms-index-index cms-home-page">
+<div id="customloader">
+  <i class="loaderimg"></i>
+</div>
 
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -429,7 +431,7 @@
         <div class="col-md-9 col-sm-9 jtv-megamenu">
           <div class="mtmegamenu">
             <ul class="hidden-xs">
-              <li class="mt-root demo_custom_link_cms">
+              <li class="mt-root demo_custom_link_cms <% if(title == 'Home'){ %> active <%}%>">
                 <div class="mt-root-item"><a href="/">
                   <div class="title title_font"><span class="title-text">Home</span></div>
                   </a></div>

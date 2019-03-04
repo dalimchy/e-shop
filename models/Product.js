@@ -65,6 +65,10 @@ const productSchema = new Schema({
         type:String,
         default:null
     },
+    is_feature:{
+        type:Number,
+        default:0
+    },
     status:{
         type:String,
         required:true

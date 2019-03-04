@@ -501,6 +501,7 @@ router.post('/add-product',(req,res)=>{
                   product_feature_img : ((req.file == undefined) ? 'demo.png': req.file.filename),
                   product_feature_img_enc : null,
                   product_image : ((proImgeArray[0] !== '') ? proImgeArray:[]),
+                  is_feature : ((req.body.is_feature == 'on') ? 1 : 0),
                   status : ((req.body.active_status == 'on') ? 1 : 0)
                 }
             if(req.file == undefined){
